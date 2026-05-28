@@ -23,6 +23,81 @@ const GROUPS = {
   L: ["Inglaterra", "Croacia", "Ghana", "Panama"],
 };
 
+const SCHEDULE = [
+  ["1", "A", "Mexico", "Sudafrica", "11 Jun", "13:00", "Estadio Azteca, Mexico City"],
+  ["2", "A", "Corea del Sur", "Chequia", "11 Jun", "20:00", "Estadio Akron, Guadalajara"],
+  ["3", "B", "Canada", "Bosnia y Herzegovina", "12 Jun", "15:00", "BMO Field, Toronto"],
+  ["4", "D", "Estados Unidos", "Paraguay", "12 Jun", "18:00", "SoFi Stadium, Los Angeles"],
+  ["5", "C", "Haiti", "Escocia", "13 Jun", "21:00", "Gillette Stadium, Boston"],
+  ["6", "D", "Australia", "Turquia", "13 Jun", "21:00", "BC Place, Vancouver"],
+  ["7", "C", "Brasil", "Marruecos", "13 Jun", "18:00", "MetLife Stadium, New York / New Jersey"],
+  ["8", "B", "Qatar", "Suiza", "13 Jun", "12:00", "Levi's Stadium, San Francisco Bay Area"],
+  ["9", "E", "Costa de Marfil", "Ecuador", "14 Jun", "19:00", "Lincoln Financial Field, Philadelphia"],
+  ["10", "E", "Alemania", "Curazao", "14 Jun", "12:00", "NRG Stadium, Houston"],
+  ["11", "F", "Paises Bajos", "Japon", "14 Jun", "15:00", "AT&T Stadium, Dallas"],
+  ["12", "F", "Suecia", "Tunez", "14 Jun", "20:00", "Estadio BBVA, Monterrey"],
+  ["13", "H", "Arabia Saudita", "Uruguay", "15 Jun", "18:00", "Hard Rock Stadium, Miami"],
+  ["14", "H", "Espana", "Cabo Verde", "15 Jun", "12:00", "Mercedes-Benz Stadium, Atlanta"],
+  ["15", "G", "Iran", "Nueva Zelanda", "15 Jun", "18:00", "SoFi Stadium, Los Angeles"],
+  ["16", "G", "Belgica", "Egipto", "15 Jun", "12:00", "Lumen Field, Seattle"],
+  ["17", "I", "Francia", "Senegal", "16 Jun", "15:00", "MetLife Stadium, New York / New Jersey"],
+  ["18", "I", "Irak", "Noruega", "16 Jun", "18:00", "Gillette Stadium, Boston"],
+  ["19", "J", "Argentina", "Argelia", "16 Jun", "20:00", "Arrowhead Stadium, Kansas City"],
+  ["20", "J", "Austria", "Jordania", "16 Jun", "21:00", "Levi's Stadium, San Francisco Bay Area"],
+  ["21", "L", "Ghana", "Panama", "17 Jun", "19:00", "BMO Field, Toronto"],
+  ["22", "L", "Inglaterra", "Croacia", "17 Jun", "15:00", "AT&T Stadium, Dallas"],
+  ["23", "K", "Portugal", "RD Congo", "17 Jun", "12:00", "NRG Stadium, Houston"],
+  ["24", "K", "Uzbekistan", "Colombia", "17 Jun", "20:00", "Estadio Azteca, Mexico City"],
+  ["25", "A", "Chequia", "Sudafrica", "18 Jun", "12:00", "Mercedes-Benz Stadium, Atlanta"],
+  ["26", "B", "Suiza", "Bosnia y Herzegovina", "18 Jun", "12:00", "SoFi Stadium, Los Angeles"],
+  ["27", "B", "Canada", "Qatar", "18 Jun", "15:00", "BC Place, Vancouver"],
+  ["28", "A", "Mexico", "Corea del Sur", "18 Jun", "19:00", "Estadio Akron, Guadalajara"],
+  ["29", "C", "Brasil", "Haiti", "19 Jun", "21:00", "Lincoln Financial Field, Philadelphia"],
+  ["30", "C", "Escocia", "Marruecos", "19 Jun", "18:00", "Gillette Stadium, Boston"],
+  ["31", "D", "Turquia", "Paraguay", "19 Jun", "20:00", "Levi's Stadium, San Francisco Bay Area"],
+  ["32", "D", "Estados Unidos", "Australia", "19 Jun", "12:00", "Lumen Field, Seattle"],
+  ["33", "E", "Alemania", "Costa de Marfil", "20 Jun", "16:00", "BMO Field, Toronto"],
+  ["34", "E", "Ecuador", "Curazao", "20 Jun", "19:00", "Arrowhead Stadium, Kansas City"],
+  ["35", "F", "Paises Bajos", "Suecia", "20 Jun", "12:00", "NRG Stadium, Houston"],
+  ["36", "F", "Tunez", "Japon", "20 Jun", "22:00", "Estadio BBVA, Monterrey"],
+  ["37", "H", "Uruguay", "Cabo Verde", "21 Jun", "18:00", "Hard Rock Stadium, Miami"],
+  ["38", "H", "Espana", "Arabia Saudita", "21 Jun", "12:00", "Mercedes-Benz Stadium, Atlanta"],
+  ["39", "G", "Belgica", "Iran", "21 Jun", "12:00", "SoFi Stadium, Los Angeles"],
+  ["40", "G", "Nueva Zelanda", "Egipto", "21 Jun", "18:00", "BC Place, Vancouver"],
+  ["41", "I", "Noruega", "Senegal", "22 Jun", "20:00", "MetLife Stadium, New York / New Jersey"],
+  ["42", "I", "Francia", "Irak", "22 Jun", "17:00", "Lincoln Financial Field, Philadelphia"],
+  ["43", "J", "Argentina", "Austria", "22 Jun", "12:00", "AT&T Stadium, Dallas"],
+  ["44", "J", "Jordania", "Argelia", "22 Jun", "20:00", "Levi's Stadium, San Francisco Bay Area"],
+  ["45", "L", "Inglaterra", "Ghana", "23 Jun", "16:00", "Gillette Stadium, Boston"],
+  ["46", "L", "Panama", "Croacia", "23 Jun", "19:00", "BMO Field, Toronto"],
+  ["47", "K", "Portugal", "Uzbekistan", "23 Jun", "12:00", "NRG Stadium, Houston"],
+  ["48", "K", "Colombia", "RD Congo", "23 Jun", "20:00", "Estadio Akron, Guadalajara"],
+  ["49", "C", "Escocia", "Brasil", "24 Jun", "18:00", "Hard Rock Stadium, Miami"],
+  ["50", "C", "Marruecos", "Haiti", "24 Jun", "18:00", "Mercedes-Benz Stadium, Atlanta"],
+  ["51", "B", "Suiza", "Canada", "24 Jun", "12:00", "BC Place, Vancouver"],
+  ["52", "B", "Bosnia y Herzegovina", "Qatar", "24 Jun", "12:00", "Lumen Field, Seattle"],
+  ["53", "A", "Chequia", "Mexico", "24 Jun", "19:00", "Estadio Azteca, Mexico City"],
+  ["54", "A", "Sudafrica", "Corea del Sur", "24 Jun", "19:00", "Estadio BBVA, Monterrey"],
+  ["55", "E", "Curazao", "Costa de Marfil", "25 Jun", "16:00", "Lincoln Financial Field, Philadelphia"],
+  ["56", "E", "Ecuador", "Alemania", "25 Jun", "16:00", "MetLife Stadium, New York / New Jersey"],
+  ["57", "F", "Japon", "Suecia", "25 Jun", "18:00", "AT&T Stadium, Dallas"],
+  ["58", "F", "Tunez", "Paises Bajos", "25 Jun", "18:00", "Arrowhead Stadium, Kansas City"],
+  ["59", "D", "Turquia", "Estados Unidos", "25 Jun", "19:00", "SoFi Stadium, Los Angeles"],
+  ["60", "D", "Paraguay", "Australia", "25 Jun", "19:00", "Levi's Stadium, San Francisco Bay Area"],
+  ["61", "I", "Noruega", "Francia", "26 Jun", "15:00", "Gillette Stadium, Boston"],
+  ["62", "I", "Senegal", "Irak", "26 Jun", "15:00", "BMO Field, Toronto"],
+  ["63", "G", "Egipto", "Iran", "26 Jun", "20:00", "Lumen Field, Seattle"],
+  ["64", "G", "Nueva Zelanda", "Belgica", "26 Jun", "20:00", "BC Place, Vancouver"],
+  ["65", "H", "Cabo Verde", "Arabia Saudita", "26 Jun", "19:00", "NRG Stadium, Houston"],
+  ["66", "H", "Uruguay", "Espana", "26 Jun", "18:00", "Estadio Akron, Guadalajara"],
+  ["67", "L", "Panama", "Inglaterra", "27 Jun", "17:00", "MetLife Stadium, New York / New Jersey"],
+  ["68", "L", "Croacia", "Ghana", "27 Jun", "17:00", "Lincoln Financial Field, Philadelphia"],
+  ["69", "J", "Argelia", "Austria", "27 Jun", "21:00", "Arrowhead Stadium, Kansas City"],
+  ["70", "J", "Jordania", "Argentina", "27 Jun", "21:00", "AT&T Stadium, Dallas"],
+  ["71", "K", "Colombia", "Portugal", "27 Jun", "19:30", "Hard Rock Stadium, Miami"],
+  ["72", "K", "RD Congo", "Uzbekistan", "27 Jun", "19:30", "Mercedes-Benz Stadium, Atlanta"],
+];
+
 const sessions = new Map();
 let db = loadDb();
 
@@ -130,6 +205,9 @@ async function handleApi(req, res, url) {
         group: null,
         home,
         away,
+        dateLabel: String(body.dateLabel || "").trim(),
+        timeLabel: String(body.timeLabel || "").trim(),
+        venue: String(body.venue || "").trim(),
         unlocked: true,
         final: false,
         homeGoals: null,
@@ -185,31 +263,7 @@ function buildClientState(session) {
 }
 
 function createInitialDb() {
-  const matches = [];
-  Object.entries(GROUPS).forEach(([group, teams]) => {
-    [
-      [0, 1],
-      [2, 3],
-      [0, 2],
-      [1, 3],
-      [0, 3],
-      [1, 2],
-    ].forEach(([homeIndex, awayIndex], roundIndex) => {
-      matches.push({
-        id: `${group}-${roundIndex + 1}`,
-        stage: "GR",
-        group,
-        home: teams[homeIndex],
-        away: teams[awayIndex],
-        unlocked: roundIndex < 2,
-        final: false,
-        homeGoals: null,
-        awayGoals: null,
-        winner: "",
-        resultLocked: false,
-      });
-    });
-  });
+  const matches = SCHEDULE.map(toMatch);
 
   return {
     players: [
@@ -239,7 +293,61 @@ function loadDb() {
   loaded.matches.forEach((match) => {
     match.resultLocked ||= Boolean(match.final);
   });
+  if (enrichSchedule(loaded.matches)) {
+    fs.writeFileSync(DATA_FILE, JSON.stringify(loaded, null, 2));
+  }
   return loaded;
+}
+
+function toMatch([matchNumber, group, home, away, dateLabel, timeLabel, venue], index) {
+  return {
+    id: `M${matchNumber}`,
+    matchNumber: Number(matchNumber),
+    stage: "GR",
+    group,
+    home,
+    away,
+    dateLabel,
+    timeLabel,
+    venue,
+    unlocked: index < 24,
+    final: false,
+    homeGoals: null,
+    awayGoals: null,
+    winner: "",
+    resultLocked: false,
+  };
+}
+
+function enrichSchedule(matches) {
+  let changed = false;
+  const byId = new Map(SCHEDULE.map((entry) => [`M${entry[0]}`, entry]));
+  const byTeams = new Map(
+    SCHEDULE.map((entry) => [`${normalizeTeam(entry[2])}|${normalizeTeam(entry[3])}`, entry]),
+  );
+  matches.forEach((match) => {
+    const entry =
+      byId.get(match.id) || byTeams.get(`${normalizeTeam(match.home)}|${normalizeTeam(match.away)}`);
+    if (!entry) return;
+    changed = setIfMissing(match, "matchNumber", Number(entry[0])) || changed;
+    changed = setIfMissing(match, "dateLabel", entry[4]) || changed;
+    changed = setIfMissing(match, "timeLabel", entry[5]) || changed;
+    changed = setIfMissing(match, "venue", entry[6]) || changed;
+  });
+  return changed;
+}
+
+function setIfMissing(target, key, value) {
+  if (target[key]) return false;
+  target[key] = value;
+  return true;
+}
+
+function normalizeTeam(team) {
+  return String(team)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
 }
 
 function saveDb() {
@@ -453,7 +561,7 @@ function serveStatic(res, pathname) {
   const relativePath = path.relative(PUBLIC_DIR, filePath);
   const firstSegment = relativePath.split(path.sep)[0];
   const ext = path.extname(filePath);
-  const allowedExtensions = new Set([".html", ".css", ".js", ".webmanifest"]);
+  const allowedExtensions = new Set([".html", ".css", ".js", ".webmanifest", ".svg"]);
   if (
     !filePath.startsWith(PUBLIC_DIR) ||
     filePath === __filename ||
@@ -474,6 +582,7 @@ function serveStatic(res, pathname) {
     ".js": "application/javascript; charset=utf-8",
     ".json": "application/json; charset=utf-8",
     ".webmanifest": "application/manifest+json; charset=utf-8",
+    ".svg": "image/svg+xml; charset=utf-8",
   };
   res.writeHead(200, { "Content-Type": contentTypes[ext] || "application/octet-stream" });
   fs.createReadStream(filePath).pipe(res);

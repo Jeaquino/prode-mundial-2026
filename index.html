@@ -15,7 +15,7 @@
     <header class="app-header">
       <div>
         <p class="eyebrow">Mundial 2026</p>
-        <h1>Prode Oficial</h1>
+        <img class="brand-logo" src="./assets/cencopay-logo.svg" alt="CencoPay" />
       </div>
       <div class="header-actions">
         <span class="session-pill" id="sessionStatus">Sin sesion</span>
@@ -27,21 +27,14 @@
 
     <main class="app-shell">
       <section class="score-strip" aria-label="Resumen">
-        <article>
-          <span id="totalPlayers">0</span>
-          <p>Jugadores</p>
-        </article>
-        <article>
-          <span id="openMatches">0</span>
-          <p>Partidos abiertos</p>
-        </article>
-        <article>
-          <span id="finishedMatches">0</span>
-          <p>Finalizados</p>
-        </article>
-        <article>
-          <span id="leaderPoints">0</span>
-          <p>Puntos del lider</p>
+        <article class="summary-carousel">
+          <div class="carousel-copy">
+            <p id="summaryKicker">Resumen</p>
+            <span class="carousel-date hidden" id="summaryDate"></span>
+            <strong id="summaryValue">Cargando...</strong>
+            <span id="summaryMeta">Preparando el prode.</span>
+          </div>
+          <div class="carousel-dots" id="summaryDots" aria-hidden="true"></div>
         </article>
       </section>
 

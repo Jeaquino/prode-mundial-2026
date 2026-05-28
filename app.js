@@ -9,6 +9,8 @@ let state = {
   session: null,
 };
 let currentFilter = "open";
+let carouselIndex = 0;
+let carouselTimer = null;
 
 const elements = {
   sessionStatus: document.querySelector("#sessionStatus"),
@@ -41,10 +43,11 @@ const elements = {
   createdPlayerNote: document.querySelector("#createdPlayerNote"),
   exportButton: document.querySelector("#exportButton"),
   exportAdminButton: document.querySelector("#exportAdminButton"),
-  totalPlayers: document.querySelector("#totalPlayers"),
-  openMatches: document.querySelector("#openMatches"),
-  finishedMatches: document.querySelector("#finishedMatches"),
-  leaderPoints: document.querySelector("#leaderPoints"),
+  summaryKicker: document.querySelector("#summaryKicker"),
+  summaryDate: document.querySelector("#summaryDate"),
+  summaryValue: document.querySelector("#summaryValue"),
+  summaryMeta: document.querySelector("#summaryMeta"),
+  summaryDots: document.querySelector("#summaryDots"),
 };
 
 document.querySelectorAll(".tab").forEach((button) => {
@@ -234,6 +237,7 @@ function render() {
   renderSession();
   renderLoginOptions();
   renderSummary();
+  setupCarousel();
   renderPredictions();
   renderRanking();
   renderAdmin();
@@ -261,10 +265,71 @@ function renderLoginOptions() {
 }
 
 function renderSummary() {
-  elements.totalPlayers.textContent = state.summary.totalPlayers ?? 0;
-  elements.openMatches.textContent = state.summary.openMatches ?? 0;
-  elements.finishedMatches.textContent = state.summary.finishedMatches ?? 0;
-  elements.leaderPoints.textContent = state.summary.leaderPoints ?? 0;
+  renderCarousel();
+}
+
+function setupCarousel() {
+  carouselIndex = Math.min(carouselIndex, Math.max(getSummarySlides().length - 1, 0));
+  renderCarousel();
+  if (carouselTimer) window.clearInterval(carouselTimer);
+  carouselTimer = window.setInterval(() => {
+    const slides = getSummarySlides();
+    if (!slides.length) return;
+    carouselIndex = (carouselIndex + 1) % slides.length;
+    renderCarousel();
+  }, 4200);
+}
+
+function renderCarousel() {
+  const slides = getSummarySlides();
+  const slide = slides[carouselIndex % slides.length];
+  elements.summaryKicker.textContent = slide.kicker;
+  elements.summaryDate.textContent = slide.date || "";
+  elements.summaryDate.classList.toggle("hidden", !slide.date);
+  elements.summaryValue.textContent = slide.value;
+  elements.summaryMeta.textContent = slide.meta;
+  elements.summaryDots.innerHTML = slides
+    .map((_, index) => `<span class="${index === carouselIndex ? "active" : ""}"></span>`)
+    .join("");
+}
+
+function getSummarySlides() {
+  const leader = state.leaderboard[0];
+  const nextMatches = state.matches.filter((match) => match.unlocked && !match.final).slice(0, 3);
+  const slides = [
+    {
+      kicker: "Jugadores",
+      value: String(state.summary.totalPlayers ?? 0),
+      meta: "Participantes cargados en el prode.",
+    },
+    {
+      kicker: "Partidos abiertos",
+      value: String(state.summary.openMatches ?? 0),
+      meta: "Disponibles para cargar pronosticos.",
+    },
+    {
+      kicker: "Lider actual",
+      value: leader ? `${leader.name} · ${leader.points} pts` : "Sin lider",
+      meta: leader ? `${leader.hits} aciertos sobre ${leader.played} finalizados.` : "El ranking se activa con resultados.",
+    },
+  ];
+
+  nextMatches.forEach((match, index) => {
+    slides.push({
+      kicker: index === 0 ? "Proximo partido" : "Tambien abierto",
+      value: `${match.home} vs ${match.away}`,
+      meta: `${matchDateText(match)} · ${stageLabel(match)}${match.group ? ` · Grupo ${match.group}` : ""}`,
+      date: matchDateText(match),
+    });
+  });
+
+  slides.push({
+    kicker: "Finalizados",
+    value: String(state.summary.finishedMatches ?? 0),
+    meta: "Resultados oficiales ya bloqueados.",
+  });
+
+  return slides;
 }
 
 function renderPredictions() {
@@ -325,8 +390,10 @@ function renderPredictionCard(match) {
     <article class="match-card ${locked ? "locked" : ""}">
       <div class="match-head">
         <div class="match-meta">
+          <span>${matchDateText(match)}</span>
           <span>${stageLabel(match)}</span>
           ${match.group ? `<span>Grupo ${match.group}</span>` : ""}
+          ${match.venue ? `<span>${escapeHtml(match.venue)}</span>` : ""}
         </div>
         ${status}
       </div>
@@ -445,8 +512,10 @@ function renderAdminMatch(match) {
       <div>
         <strong>${escapeHtml(match.home)} vs ${escapeHtml(match.away)}</strong>
         <div class="match-meta">
+          <span>${matchDateText(match)}</span>
           <span>${stageLabel(match)}</span>
           ${match.group ? `<span>Grupo ${match.group}</span>` : ""}
+          ${match.venue ? `<span>${escapeHtml(match.venue)}</span>` : ""}
           ${resultNote}
         </div>
       </div>
@@ -538,6 +607,11 @@ function stageLabel(match) {
     F: "Final",
   };
   return labels[match.stage] || match.stage;
+}
+
+function matchDateText(match) {
+  if (!match.dateLabel && !match.timeLabel) return "Fecha a confirmar";
+  return [match.dateLabel, match.timeLabel].filter(Boolean).join(" · ");
 }
 
 function escapeHtml(value) {
