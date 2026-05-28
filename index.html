@@ -18,11 +18,10 @@
         <h1>Prode Oficial</h1>
       </div>
       <div class="header-actions">
-        <label class="player-picker">
-          <span>Jugador</span>
-          <select id="playerSelect"></select>
-        </label>
-        <button class="button secondary" id="addPlayerButton" type="button">Nuevo jugador</button>
+        <span class="session-pill" id="sessionStatus">Sin sesion</span>
+        <button class="button" id="loginButton" type="button">Entrar</button>
+        <button class="button secondary" id="adminLoginButton" type="button">Admin</button>
+        <button class="button secondary hidden" id="logoutButton" type="button">Salir</button>
       </div>
     </header>
 
@@ -105,6 +104,7 @@
             <button class="chip active" data-filter="open" type="button">Abiertos</button>
             <button class="chip" data-filter="all" type="button">Todos</button>
             <button class="chip" data-filter="finished" type="button">Finalizados</button>
+            <button class="button" id="commitPredictionsButton" type="button">Confirmar pronosticos</button>
           </div>
         </div>
         <div class="match-grid" id="predictionList"></div>
@@ -129,12 +129,25 @@
           </div>
           <div class="admin-actions">
             <button class="button" id="unlockNextButton" type="button">Abrir proxima tanda</button>
-            <label class="button secondary import-label">
-              Importar JSON
-              <input id="importInput" type="file" accept="application/json" />
-            </label>
+            <button class="button secondary" id="exportAdminButton" type="button">Exportar JSON</button>
           </div>
         </div>
+
+        <form class="admin-form" id="adminPlayerForm">
+          <h3>Crear jugador</h3>
+          <div class="form-grid">
+            <label>
+              Nombre
+              <input id="newPlayerName" required placeholder="Nombre o apodo" />
+            </label>
+            <label>
+              PIN
+              <input id="newPlayerPin" inputmode="numeric" placeholder="Automatico" />
+            </label>
+            <button class="button" type="submit">Crear jugador</button>
+          </div>
+          <p class="form-note" id="createdPlayerNote"></p>
+        </form>
 
         <form class="admin-form" id="knockoutForm">
           <h3>Agregar partido de eliminacion</h3>
@@ -166,19 +179,37 @@
 
     </main>
 
-    <dialog id="playerDialog">
-      <form method="dialog" id="playerForm">
-        <h2>Nuevo jugador</h2>
+    <dialog id="loginDialog">
+      <form method="dialog" id="loginForm">
+        <h2>Entrar al prode</h2>
         <label>
-          Nombre
-          <input id="playerName" maxlength="32" placeholder="Nombre o apodo" required />
+          Jugador
+          <select id="loginPlayerSelect"></select>
+        </label>
+        <label>
+          PIN
+          <input id="loginPin" inputmode="numeric" autocomplete="one-time-code" required />
         </label>
         <div class="dialog-actions">
-          <button class="button secondary" value="cancel" type="button" id="cancelPlayerButton">
-            Cancelar
-          </button>
-          <button class="button" value="default" type="submit">Crear</button>
+          <button class="button secondary" value="cancel" type="button" id="cancelLoginButton">Cancelar</button>
+          <button class="button" value="default" type="submit">Entrar</button>
         </div>
+        <p class="form-note" id="loginError"></p>
+      </form>
+    </dialog>
+
+    <dialog id="adminDialog">
+      <form method="dialog" id="adminLoginForm">
+        <h2>Entrar como admin</h2>
+        <label>
+          Codigo admin
+          <input id="adminCode" type="password" autocomplete="current-password" required />
+        </label>
+        <div class="dialog-actions">
+          <button class="button secondary" value="cancel" type="button" id="cancelAdminButton">Cancelar</button>
+          <button class="button" value="default" type="submit">Entrar</button>
+        </div>
+        <p class="form-note" id="adminLoginError"></p>
       </form>
     </dialog>
 

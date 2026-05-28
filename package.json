@@ -1,0 +1,9 @@
+{
+  "name": "prode-mundial-2026",
+  "version": "0.2.0",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check app.js && node --check server.js"
+  }
+}

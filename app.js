@@ -1,40 +1,46 @@
-const STORAGE_KEY = "prode-mundial-2026-state-v1";
+const TOKEN_KEY = "prode-mundial-2026-token";
 
-const GROUPS = {
-  A: ["Mexico", "Sudafrica", "Corea del Sur", "Chequia"],
-  B: ["Canada", "Suiza", "Qatar", "Bosnia y Herzegovina"],
-  C: ["Brasil", "Marruecos", "Haiti", "Escocia"],
-  D: ["Estados Unidos", "Paraguay", "Australia", "Turquia"],
-  E: ["Alemania", "Curazao", "Costa de Marfil", "Ecuador"],
-  F: ["Paises Bajos", "Japon", "Tunez", "Suecia"],
-  G: ["Belgica", "Egipto", "Iran", "Nueva Zelanda"],
-  H: ["Espana", "Cabo Verde", "Arabia Saudita", "Uruguay"],
-  I: ["Francia", "Senegal", "Noruega", "Irak"],
-  J: ["Argentina", "Argelia", "Austria", "Jordania"],
-  K: ["Portugal", "Uzbekistan", "Colombia", "RD Congo"],
-  L: ["Inglaterra", "Croacia", "Ghana", "Panama"],
+let state = {
+  players: [],
+  matches: [],
+  predictions: {},
+  leaderboard: [],
+  summary: {},
+  session: null,
 };
-
-const state = loadState();
 let currentFilter = "open";
 
 const elements = {
-  playerSelect: document.querySelector("#playerSelect"),
-  addPlayerButton: document.querySelector("#addPlayerButton"),
-  playerDialog: document.querySelector("#playerDialog"),
-  playerForm: document.querySelector("#playerForm"),
-  cancelPlayerButton: document.querySelector("#cancelPlayerButton"),
-  playerName: document.querySelector("#playerName"),
+  sessionStatus: document.querySelector("#sessionStatus"),
+  loginButton: document.querySelector("#loginButton"),
+  adminLoginButton: document.querySelector("#adminLoginButton"),
+  logoutButton: document.querySelector("#logoutButton"),
+  loginDialog: document.querySelector("#loginDialog"),
+  loginForm: document.querySelector("#loginForm"),
+  loginPlayerSelect: document.querySelector("#loginPlayerSelect"),
+  loginPin: document.querySelector("#loginPin"),
+  loginError: document.querySelector("#loginError"),
+  cancelLoginButton: document.querySelector("#cancelLoginButton"),
+  adminDialog: document.querySelector("#adminDialog"),
+  adminLoginForm: document.querySelector("#adminLoginForm"),
+  adminCode: document.querySelector("#adminCode"),
+  adminLoginError: document.querySelector("#adminLoginError"),
+  cancelAdminButton: document.querySelector("#cancelAdminButton"),
   predictionList: document.querySelector("#predictionList"),
   rankingList: document.querySelector("#rankingList"),
   adminMatchList: document.querySelector("#adminMatchList"),
   unlockNextButton: document.querySelector("#unlockNextButton"),
+  commitPredictionsButton: document.querySelector("#commitPredictionsButton"),
   knockoutForm: document.querySelector("#knockoutForm"),
   knockoutHome: document.querySelector("#knockoutHome"),
   knockoutAway: document.querySelector("#knockoutAway"),
   knockoutRound: document.querySelector("#knockoutRound"),
+  adminPlayerForm: document.querySelector("#adminPlayerForm"),
+  newPlayerName: document.querySelector("#newPlayerName"),
+  newPlayerPin: document.querySelector("#newPlayerPin"),
+  createdPlayerNote: document.querySelector("#createdPlayerNote"),
   exportButton: document.querySelector("#exportButton"),
-  importInput: document.querySelector("#importInput"),
+  exportAdminButton: document.querySelector("#exportAdminButton"),
   totalPlayers: document.querySelector("#totalPlayers"),
   openMatches: document.querySelector("#openMatches"),
   finishedMatches: document.querySelector("#finishedMatches"),
@@ -42,9 +48,7 @@ const elements = {
 };
 
 document.querySelectorAll(".tab").forEach((button) => {
-  button.addEventListener("click", () => {
-    setActiveTab(button.dataset.tab);
-  });
+  button.addEventListener("click", () => setActiveTab(button.dataset.tab));
 });
 
 document.querySelectorAll("[data-tab-jump]").forEach((button) => {
@@ -60,78 +64,122 @@ document.querySelectorAll("[data-filter]").forEach((button) => {
   });
 });
 
-elements.addPlayerButton.addEventListener("click", () => {
-  elements.playerName.value = "";
-  elements.playerDialog.showModal();
-  elements.playerName.focus();
+elements.loginButton.addEventListener("click", () => {
+  renderLoginOptions();
+  elements.loginError.textContent = "";
+  elements.loginPin.value = "";
+  elements.loginDialog.showModal();
 });
 
-elements.cancelPlayerButton.addEventListener("click", () => elements.playerDialog.close());
+elements.adminLoginButton.addEventListener("click", () => {
+  elements.adminLoginError.textContent = "";
+  elements.adminCode.value = "";
+  elements.adminDialog.showModal();
+});
 
-elements.playerForm.addEventListener("submit", (event) => {
+elements.logoutButton.addEventListener("click", async () => {
+  await api("/api/logout", { method: "POST" }).catch(() => {});
+  localStorage.removeItem(TOKEN_KEY);
+  await refresh();
+});
+
+elements.cancelLoginButton.addEventListener("click", () => elements.loginDialog.close());
+elements.cancelAdminButton.addEventListener("click", () => elements.adminDialog.close());
+
+elements.loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  const name = elements.playerName.value.trim();
-  if (!name) return;
-  const id = crypto.randomUUID();
-  state.players.push({ id, name });
-  state.activePlayerId = id;
-  saveAndRender();
-  elements.playerDialog.close();
+  try {
+    const response = await api("/api/login", {
+      method: "POST",
+      body: {
+        playerId: elements.loginPlayerSelect.value,
+        pin: elements.loginPin.value,
+      },
+    });
+    localStorage.setItem(TOKEN_KEY, response.token);
+    elements.loginDialog.close();
+    await refresh();
+    setActiveTab("predictions");
+  } catch (error) {
+    elements.loginError.textContent = error.message;
+  }
 });
 
-elements.playerSelect.addEventListener("change", (event) => {
-  state.activePlayerId = event.target.value;
-  saveAndRender();
+elements.adminLoginForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  try {
+    const response = await api("/api/admin/login", {
+      method: "POST",
+      body: { code: elements.adminCode.value },
+    });
+    localStorage.setItem(TOKEN_KEY, response.token);
+    elements.adminDialog.close();
+    await refresh();
+    setActiveTab("admin");
+  } catch (error) {
+    elements.adminLoginError.textContent = error.message;
+  }
 });
 
-elements.unlockNextButton.addEventListener("click", () => {
-  const nextLocked = state.matches.filter((match) => !match.unlocked).slice(0, 12);
-  nextLocked.forEach((match) => {
-    match.unlocked = true;
+elements.commitPredictionsButton.addEventListener("click", async () => {
+  if (state.session?.role !== "player") {
+    elements.loginButton.click();
+    return;
+  }
+  await api("/api/predictions/commit", { method: "POST", body: {} });
+  await refresh();
+});
+
+elements.unlockNextButton.addEventListener("click", async () => {
+  await adminAction("/api/admin/unlock-next", { method: "POST" });
+});
+
+elements.adminPlayerForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const response = await adminAction("/api/admin/players", {
+    method: "POST",
+    body: {
+      name: elements.newPlayerName.value,
+      pin: elements.newPlayerPin.value,
+    },
   });
-  saveAndRender();
+  if (response?.createdPlayer) {
+    elements.createdPlayerNote.textContent = `Jugador ${response.createdPlayer.name} creado. PIN: ${response.createdPlayer.pin}`;
+  }
+  elements.adminPlayerForm.reset();
 });
 
-elements.knockoutForm.addEventListener("submit", (event) => {
+elements.knockoutForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  const home = elements.knockoutHome.value.trim();
-  const away = elements.knockoutAway.value.trim();
-  if (!home || !away) return;
-  state.matches.push({
-    id: `ko-${crypto.randomUUID()}`,
-    stage: elements.knockoutRound.value,
-    group: null,
-    home,
-    away,
-    unlocked: true,
-    final: false,
-    homeGoals: null,
-    awayGoals: null,
-    winner: "",
+  await adminAction("/api/admin/matches/knockout", {
+    method: "POST",
+    body: {
+      home: elements.knockoutHome.value,
+      away: elements.knockoutAway.value,
+      stage: elements.knockoutRound.value,
+    },
   });
   elements.knockoutForm.reset();
-  saveAndRender();
 });
 
-elements.exportButton.addEventListener("click", () => {
-  const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = "prode-mundial-2026.json";
-  link.click();
-  URL.revokeObjectURL(url);
+[elements.exportButton, elements.exportAdminButton].forEach((button) => {
+  button.addEventListener("click", exportData);
 });
 
-elements.importInput.addEventListener("change", async (event) => {
-  const [file] = event.target.files;
-  if (!file) return;
-  const imported = JSON.parse(await file.text());
-  Object.assign(state, imported);
-  ensureShape(state);
-  saveAndRender();
-  event.target.value = "";
-});
+async function exportData() {
+  try {
+    const data = await api("/api/admin/export");
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "prode-mundial-2026.json";
+    link.click();
+    URL.revokeObjectURL(url);
+  } catch (error) {
+    alert(error.message);
+  }
+}
 
 function setActiveTab(tabName) {
   document.querySelectorAll(".tab").forEach((tab) => {
@@ -141,98 +189,93 @@ function setActiveTab(tabName) {
   document.querySelector(`#${tabName}Panel`).classList.add("active");
 }
 
-function createInitialState() {
-  const matches = [];
-  Object.entries(GROUPS).forEach(([group, teams]) => {
-    const pairings = [
-      [0, 1],
-      [2, 3],
-      [0, 2],
-      [1, 3],
-      [0, 3],
-      [1, 2],
-    ];
-    pairings.forEach(([homeIndex, awayIndex], roundIndex) => {
-      matches.push({
-        id: `${group}-${roundIndex + 1}`,
-        stage: "GR",
-        group,
-        home: teams[homeIndex],
-        away: teams[awayIndex],
-        unlocked: roundIndex < 2,
-        final: false,
-        homeGoals: null,
-        awayGoals: null,
-        winner: "",
-      });
-    });
-  });
-
-  const firstPlayerId = crypto.randomUUID();
-  return {
-    activePlayerId: firstPlayerId,
-    players: [{ id: firstPlayerId, name: "Yo" }],
-    predictions: {},
-    matches,
-  };
-}
-
-function loadState() {
-  try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    if (saved) {
-      ensureShape(saved);
-      return saved;
-    }
-  } catch {
-    localStorage.removeItem(STORAGE_KEY);
-  }
-  return createInitialState();
-}
-
-function ensureShape(data) {
-  data.players ||= [];
-  data.predictions ||= {};
-  data.matches ||= [];
-  if (!data.players.length) {
-    const id = crypto.randomUUID();
-    data.players.push({ id, name: "Yo" });
-    data.activePlayerId = id;
-  }
-  data.activePlayerId ||= data.players[0].id;
-}
-
-function saveAndRender() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+async function refresh() {
+  state = await api("/api/state");
   render();
 }
 
+async function api(path, options = {}) {
+  const headers = { ...(options.headers || {}) };
+  const token = localStorage.getItem(TOKEN_KEY);
+  if (token) headers.Authorization = `Bearer ${token}`;
+  if (options.body !== undefined) headers["Content-Type"] = "application/json";
+
+  const response = await fetch(path, {
+    ...options,
+    headers,
+    body: options.body !== undefined ? JSON.stringify(options.body) : undefined,
+  });
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    if (response.status === 401) localStorage.removeItem(TOKEN_KEY);
+    throw new Error(payload.error || "No se pudo completar la accion");
+  }
+  return payload;
+}
+
+async function adminAction(path, options) {
+  if (state.session?.role !== "admin") {
+    elements.adminLoginButton.click();
+    return null;
+  }
+  try {
+    const response = await api(path, options);
+    state = response;
+    render();
+    return response;
+  } catch (error) {
+    alert(error.message);
+    await refresh();
+    return null;
+  }
+}
+
 function render() {
-  renderPlayers();
+  renderSession();
+  renderLoginOptions();
   renderSummary();
   renderPredictions();
   renderRanking();
   renderAdmin();
 }
 
-function renderPlayers() {
-  elements.playerSelect.innerHTML = state.players
+function renderSession() {
+  const session = state.session;
+  elements.logoutButton.classList.toggle("hidden", !session);
+  elements.loginButton.classList.toggle("hidden", Boolean(session));
+  elements.adminLoginButton.classList.toggle("hidden", Boolean(session));
+
+  if (!session) {
+    elements.sessionStatus.textContent = "Sin sesion";
+  } else if (session.role === "admin") {
+    elements.sessionStatus.textContent = "Admin";
+  } else {
+    elements.sessionStatus.textContent = session.playerName;
+  }
+}
+
+function renderLoginOptions() {
+  elements.loginPlayerSelect.innerHTML = state.players
     .map((player) => `<option value="${player.id}">${escapeHtml(player.name)}</option>`)
     .join("");
-  elements.playerSelect.value = state.activePlayerId;
 }
 
 function renderSummary() {
-  const leaderboard = calculateLeaderboard();
-  elements.totalPlayers.textContent = state.players.length;
-  elements.openMatches.textContent = state.matches.filter((match) => match.unlocked && !match.final).length;
-  elements.finishedMatches.textContent = state.matches.filter((match) => match.final).length;
-  elements.leaderPoints.textContent = leaderboard[0]?.points ?? 0;
+  elements.totalPlayers.textContent = state.summary.totalPlayers ?? 0;
+  elements.openMatches.textContent = state.summary.openMatches ?? 0;
+  elements.finishedMatches.textContent = state.summary.finishedMatches ?? 0;
+  elements.leaderPoints.textContent = state.summary.leaderPoints ?? 0;
 }
 
 function renderPredictions() {
-  const activePlayer = state.players.find((player) => player.id === state.activePlayerId);
-  if (!activePlayer) return;
+  if (state.session?.role !== "player") {
+    elements.predictionList.innerHTML = `
+      <div class="empty-state">
+        Inicia sesion con tu jugador y PIN para cargar o ver tus pronosticos.
+      </div>
+    `;
+    return;
+  }
 
   const matches = state.matches.filter((match) => {
     if (currentFilter === "open") return match.unlocked && !match.final;
@@ -242,15 +285,15 @@ function renderPredictions() {
   const groupedMatches = groupMatches(matches);
 
   elements.predictionList.innerHTML = matches.length
-    ? groupedMatches.map((group) => renderPredictionGroup(group, activePlayer.id)).join("")
+    ? groupedMatches.map(renderPredictionGroup).join("")
     : `<div class="empty-state">No hay partidos para este filtro.</div>`;
 
   elements.predictionList.querySelectorAll("[data-prediction]").forEach((input) => {
-    input.addEventListener("input", handlePredictionInput);
+    input.addEventListener("change", handlePredictionInput);
   });
 }
 
-function renderPredictionGroup(group, playerId) {
+function renderPredictionGroup(group) {
   return `
     <section class="group-card">
       <header class="group-head">
@@ -261,21 +304,22 @@ function renderPredictionGroup(group, playerId) {
         <span class="badge">${group.matches.length} partidos</span>
       </header>
       <div class="group-match-list">
-        ${group.matches.map((match) => renderPredictionCard(match, playerId)).join("")}
+        ${group.matches.map(renderPredictionCard).join("")}
       </div>
     </section>
   `;
 }
 
-function renderPredictionCard(match, playerId) {
-  const prediction = getPrediction(playerId, match.id);
-  const locked = !match.unlocked || match.final;
-  const score = match.final ? scorePrediction(prediction, match) : null;
+function renderPredictionCard(match) {
+  const prediction = getPrediction(match.id);
+  const locked = !match.unlocked || match.final || prediction.locked;
   const status = match.final
     ? `<span class="badge final">Finalizado</span>`
-    : match.unlocked
-      ? `<span class="badge">Abierto</span>`
-      : `<span class="badge locked">Bloqueado</span>`;
+    : prediction.locked
+      ? `<span class="badge locked">Confirmado</span>`
+      : match.unlocked
+        ? `<span class="badge">Abierto</span>`
+        : `<span class="badge locked">Bloqueado</span>`;
 
   return `
     <article class="match-card ${locked ? "locked" : ""}">
@@ -299,31 +343,38 @@ function renderPredictionCard(match, playerId) {
         </div>
       </div>
       <div class="result-line">
-        <span>${match.final ? `Resultado oficial: ${match.homeGoals}-${match.awayGoals}` : "Pendiente de resultado oficial"}</span>
-        <strong class="points ${score?.points < 0 ? "negative" : ""}">${score ? `${score.points} pts` : ""}</strong>
+        <span>${match.final ? `Resultado oficial: ${match.homeGoals}-${match.awayGoals}` : prediction.locked ? "Pronostico confirmado" : "Pendiente de resultado oficial"}</span>
       </div>
     </article>
   `;
 }
 
-function handlePredictionInput(event) {
+async function handlePredictionInput(event) {
   const input = event.target;
   const matchId = input.dataset.matchId;
-  const field = input.dataset.prediction === "home" ? "homeGoals" : "awayGoals";
-  const prediction = getPrediction(state.activePlayerId, matchId);
-  prediction[field] = input.value === "" ? null : Number(input.value);
-  saveAndRender();
+  const current = getPrediction(matchId);
+  const body = {
+    homeGoals: input.dataset.prediction === "home" ? input.value : current.homeGoals,
+    awayGoals: input.dataset.prediction === "away" ? input.value : current.awayGoals,
+  };
+  try {
+    state = await api(`/api/predictions/${encodeURIComponent(matchId)}`, {
+      method: "POST",
+      body,
+    });
+    render();
+  } catch (error) {
+    alert(error.message);
+    await refresh();
+  }
 }
 
-function getPrediction(playerId, matchId) {
-  state.predictions[playerId] ||= {};
-  state.predictions[playerId][matchId] ||= { homeGoals: null, awayGoals: null };
-  return state.predictions[playerId][matchId];
+function getPrediction(matchId) {
+  return state.predictions[matchId] || { homeGoals: null, awayGoals: null, locked: false };
 }
 
 function renderRanking() {
-  const leaderboard = calculateLeaderboard();
-  elements.rankingList.innerHTML = leaderboard
+  elements.rankingList.innerHTML = state.leaderboard
     .map(
       (row, index) => `
         <article class="ranking-row">
@@ -339,23 +390,20 @@ function renderRanking() {
     .join("");
 }
 
-function calculateLeaderboard() {
-  return state.players
-    .map((player) => {
-      const scores = state.matches
-        .filter((match) => match.final)
-        .map((match) => scorePrediction(getPrediction(player.id, match.id), match));
-      return {
-        ...player,
-        points: scores.reduce((total, score) => total + score.points, 0),
-        hits: scores.filter((score) => score.points > 0).length,
-        played: scores.length,
-      };
-    })
-    .sort((a, b) => b.points - a.points || b.hits - a.hits || a.name.localeCompare(b.name));
-}
-
 function renderAdmin() {
+  if (state.session?.role !== "admin") {
+    elements.adminPlayerForm.classList.add("hidden");
+    elements.knockoutForm.classList.add("hidden");
+    elements.adminMatchList.innerHTML = `
+      <div class="empty-state">
+        Entra como admin para crear jugadores, desbloquear partidos y cargar resultados.
+      </div>
+    `;
+    return;
+  }
+
+  elements.adminPlayerForm.classList.remove("hidden");
+  elements.knockoutForm.classList.remove("hidden");
   elements.adminMatchList.innerHTML = groupMatches(state.matches)
     .map(
       (group) => `
@@ -376,7 +424,7 @@ function renderAdmin() {
     .join("");
 
   elements.adminMatchList.querySelectorAll("[data-admin-score]").forEach((input) => {
-    input.addEventListener("input", handleAdminScoreInput);
+    input.addEventListener("change", handleAdminScoreInput);
   });
   elements.adminMatchList.querySelectorAll("[data-admin-final]").forEach((input) => {
     input.addEventListener("change", handleAdminToggle);
@@ -390,6 +438,8 @@ function renderAdmin() {
 }
 
 function renderAdminMatch(match) {
+  const disabled = match.resultLocked ? "disabled" : "";
+  const resultNote = match.resultLocked ? `<span class="badge final">Resultado bloqueado</span>` : "";
   return `
     <article class="admin-match">
       <div>
@@ -397,25 +447,26 @@ function renderAdminMatch(match) {
         <div class="match-meta">
           <span>${stageLabel(match)}</span>
           ${match.group ? `<span>Grupo ${match.group}</span>` : ""}
+          ${resultNote}
         </div>
       </div>
       <div class="admin-controls">
         <input data-admin-score="home" data-match-id="${match.id}" type="number" min="0" max="20"
-          value="${match.homeGoals ?? ""}" aria-label="Resultado ${escapeHtml(match.home)}" />
+          value="${match.homeGoals ?? ""}" ${disabled} aria-label="Resultado ${escapeHtml(match.home)}" />
         <strong>-</strong>
         <input data-admin-score="away" data-match-id="${match.id}" type="number" min="0" max="20"
-          value="${match.awayGoals ?? ""}" aria-label="Resultado ${escapeHtml(match.away)}" />
-        ${match.stage === "GR" ? "" : renderWinnerSelect(match)}
-        <label><input data-admin-unlocked data-match-id="${match.id}" type="checkbox" ${match.unlocked ? "checked" : ""} /> Abierto</label>
-        <label><input data-admin-final data-match-id="${match.id}" type="checkbox" ${match.final ? "checked" : ""} /> Final</label>
+          value="${match.awayGoals ?? ""}" ${disabled} aria-label="Resultado ${escapeHtml(match.away)}" />
+        ${match.stage === "GR" ? "" : renderWinnerSelect(match, disabled)}
+        <label><input data-admin-unlocked data-match-id="${match.id}" type="checkbox" ${match.unlocked ? "checked" : ""} ${disabled} /> Abierto</label>
+        <label><input data-admin-final data-match-id="${match.id}" type="checkbox" ${match.final ? "checked" : ""} ${disabled} /> Final</label>
       </div>
     </article>
   `;
 }
 
-function renderWinnerSelect(match) {
+function renderWinnerSelect(match, disabled) {
   return `
-    <select data-admin-winner data-match-id="${match.id}" aria-label="Ganador final">
+    <select data-admin-winner data-match-id="${match.id}" ${disabled} aria-label="Ganador final">
       <option value="">Ganador final</option>
       <option value="home" ${match.winner === "home" ? "selected" : ""}>${escapeHtml(match.home)}</option>
       <option value="away" ${match.winner === "away" ? "selected" : ""}>${escapeHtml(match.away)}</option>
@@ -423,28 +474,30 @@ function renderWinnerSelect(match) {
   `;
 }
 
-function handleAdminScoreInput(event) {
+async function handleAdminScoreInput(event) {
   const match = findMatch(event.target.dataset.matchId);
   const field = event.target.dataset.adminScore === "home" ? "homeGoals" : "awayGoals";
-  match[field] = event.target.value === "" ? null : Number(event.target.value);
-  saveAndRender();
+  await patchMatch(match.id, { [field]: event.target.value });
 }
 
-function handleAdminToggle(event) {
+async function handleAdminToggle(event) {
   const match = findMatch(event.target.dataset.matchId);
   if (event.target.hasAttribute("data-admin-final")) {
-    match.final = event.target.checked;
-    if (match.final) match.unlocked = true;
+    await patchMatch(match.id, { final: event.target.checked });
   } else {
-    match.unlocked = event.target.checked;
+    await patchMatch(match.id, { unlocked: event.target.checked });
   }
-  saveAndRender();
 }
 
-function handleAdminWinner(event) {
-  const match = findMatch(event.target.dataset.matchId);
-  match.winner = event.target.value;
-  saveAndRender();
+async function handleAdminWinner(event) {
+  await patchMatch(event.target.dataset.matchId, { winner: event.target.value });
+}
+
+async function patchMatch(matchId, body) {
+  await adminAction(`/api/admin/matches/${encodeURIComponent(matchId)}`, {
+    method: "PATCH",
+    body,
+  });
 }
 
 function findMatch(matchId) {
@@ -452,7 +505,7 @@ function findMatch(matchId) {
 }
 
 function groupMatches(matches) {
-  const groupOrder = Object.keys(GROUPS);
+  const groupOrder = "ABCDEFGHIJKL".split("");
   const groups = groupOrder
     .map((groupKey) => ({
       key: groupKey,
@@ -473,45 +526,6 @@ function groupMatches(matches) {
   }
 
   return groups;
-}
-
-function scorePrediction(prediction, match) {
-  if (
-    prediction.homeGoals === null ||
-    prediction.awayGoals === null ||
-    match.homeGoals === null ||
-    match.awayGoals === null
-  ) {
-    return { points: 0, reason: "Sin datos" };
-  }
-
-  const predictedDiff = prediction.homeGoals - prediction.awayGoals;
-  const actualDiff = match.homeGoals - match.awayGoals;
-  const predictedSign = Math.sign(predictedDiff);
-  const actualSign = Math.sign(actualDiff);
-  let points = 0;
-  let reason = "Errado";
-
-  if (prediction.homeGoals === match.homeGoals && prediction.awayGoals === match.awayGoals) {
-    points = 5;
-    reason = "Marcador exacto";
-  } else if (predictedSign === 0 && actualSign === 0) {
-    points = 4;
-    reason = "Empate correcto";
-  } else if (predictedSign === actualSign && predictedDiff === actualDiff) {
-    points = 4;
-    reason = "Diferencia y ganador";
-  } else if (predictedSign === actualSign && actualSign !== 0) {
-    points = 3;
-    reason = "Ganador";
-  }
-
-  if (match.stage !== "GR" && match.winner) {
-    const predictedWinner = predictedSign > 0 ? "home" : predictedSign < 0 ? "away" : "";
-    points += predictedWinner === match.winner ? 1 : -1;
-  }
-
-  return { points, reason };
 }
 
 function stageLabel(match) {
@@ -535,4 +549,6 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
-render();
+refresh().catch((error) => {
+  document.body.innerHTML = `<main class="app-shell"><div class="empty-state">${escapeHtml(error.message)}</div></main>`;
+});

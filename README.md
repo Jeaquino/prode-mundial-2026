@@ -14,24 +14,37 @@ solo se pronostican los partidos desbloqueados por el organizador.
 
 ## Uso local
 
-Abrir `index.html` en el navegador o servir la carpeta con cualquier web server.
+La app ahora usa un backend minimo en Node para manejar login por PIN, bloqueo de
+pronosticos y resultados finales.
 
 ```powershell
 cd C:\apps\codex\prode-mundial-2026
-python -m http.server 4173
+node server.js
 ```
 
-Luego entrar a `http://localhost:4173`.
+Luego entrar a `http://localhost:4174`.
+
+Credenciales iniciales:
+
+- Jugador demo: `Demo`
+- PIN demo: `123456`
+- Codigo admin por defecto: `admin2026`
+
+Para produccion, definir un codigo admin propio:
+
+```powershell
+$env:ADMIN_CODE="cambiar-este-codigo"
+node server.js
+```
 
 ## Deploy con Docker
 
 ```powershell
 docker build -t prode-mundial-2026 .
-docker run --rm -p 8080:80 prode-mundial-2026
+docker run --rm -p 8080:80 -e ADMIN_CODE="cambiar-este-codigo" prode-mundial-2026
 ```
 
 ## Persistencia
 
-La version inicial guarda datos en `localStorage` del navegador e incluye exportacion/importacion
-JSON desde la pantalla de ranking/admin. Para multiusuario real, el siguiente paso natural es
-reemplazar ese storage por una API pequena con PostgreSQL o Supabase self-hosted.
+Los datos se guardan en `data/store.json` del lado servidor. Para produccion conviene montar
+esa carpeta como volumen o migrarla a PostgreSQL.
