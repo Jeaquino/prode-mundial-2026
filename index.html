@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Prode Mundial 2026</title>
+    <meta
+      name="description"
+      content="Aplicacion web para organizar un prode del Mundial 2026 con grupos privados, reglas de puntaje y ranking."
+    />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">Mundial 2026</p>
+        <h1>Prode Oficial</h1>
+      </div>
+      <div class="header-actions">
+        <label class="player-picker">
+          <span>Jugador</span>
+          <select id="playerSelect"></select>
+        </label>
+        <button class="button secondary" id="addPlayerButton" type="button">Nuevo jugador</button>
+      </div>
+    </header>
+
+    <main class="app-shell">
+      <section class="score-strip" aria-label="Resumen">
+        <article>
+          <span id="totalPlayers">0</span>
+          <p>Jugadores</p>
+        </article>
+        <article>
+          <span id="openMatches">0</span>
+          <p>Partidos abiertos</p>
+        </article>
+        <article>
+          <span id="finishedMatches">0</span>
+          <p>Finalizados</p>
+        </article>
+        <article>
+          <span id="leaderPoints">0</span>
+          <p>Puntos del lider</p>
+        </article>
+      </section>
+
+      <nav class="tabs" aria-label="Secciones">
+        <button class="tab active" data-tab="predictions" type="button">Pronosticos</button>
+        <button class="tab" data-tab="ranking" type="button">Ranking</button>
+        <button class="tab" data-tab="admin" type="button">Admin</button>
+        <button class="tab" data-tab="rules" type="button">Reglas</button>
+      </nav>
+
+      <section class="panel active" id="predictionsPanel">
+        <div class="toolbar">
+          <div>
+            <h2>Partidos para predecir</h2>
+            <p>Modo oficial: solo se cargan pronosticos para partidos desbloqueados.</p>
+          </div>
+          <div class="filters" role="group" aria-label="Filtros">
+            <button class="chip active" data-filter="open" type="button">Abiertos</button>
+            <button class="chip" data-filter="all" type="button">Todos</button>
+            <button class="chip" data-filter="finished" type="button">Finalizados</button>
+          </div>
+        </div>
+        <div class="match-grid" id="predictionList"></div>
+      </section>
+
+      <section class="panel" id="rankingPanel">
+        <div class="toolbar">
+          <div>
+            <h2>Tabla de posiciones</h2>
+            <p>El ranking se recalcula automaticamente con cada resultado oficial.</p>
+          </div>
+          <button class="button secondary" id="exportButton" type="button">Exportar JSON</button>
+        </div>
+        <div class="ranking" id="rankingList"></div>
+      </section>
+
+      <section class="panel" id="adminPanel">
+        <div class="toolbar">
+          <div>
+            <h2>Administracion del prode</h2>
+            <p>Desbloquea fechas, carga resultados y suma partidos de eliminacion.</p>
+          </div>
+          <div class="admin-actions">
+            <button class="button" id="unlockNextButton" type="button">Abrir proxima tanda</button>
+            <label class="button secondary import-label">
+              Importar JSON
+              <input id="importInput" type="file" accept="application/json" />
+            </label>
+          </div>
+        </div>
+
+        <form class="admin-form" id="knockoutForm">
+          <h3>Agregar partido de eliminacion</h3>
+          <div class="form-grid">
+            <label>
+              Equipo A
+              <input id="knockoutHome" required placeholder="Argentina" />
+            </label>
+            <label>
+              Equipo B
+              <input id="knockoutAway" required placeholder="Brasil" />
+            </label>
+            <label>
+              Ronda
+              <select id="knockoutRound">
+                <option value="R32">16avos</option>
+                <option value="R16">Octavos</option>
+                <option value="QF">Cuartos</option>
+                <option value="SF">Semifinal</option>
+                <option value="F">Final</option>
+              </select>
+            </label>
+            <button class="button" type="submit">Agregar</button>
+          </div>
+        </form>
+
+        <div class="admin-list" id="adminMatchList"></div>
+      </section>
+
+      <section class="panel" id="rulesPanel">
+        <div class="rules-layout">
+          <article class="rules-card">
+            <h2>Como se ganan puntos</h2>
+            <p>Tu prediccion se compara con el resultado oficial del partido.</p>
+            <ul class="rules-list">
+              <li><strong>Marcador exacto</strong><span>Predices 2-1, fue 2-1</span><b>5 pts</b></li>
+              <li><strong>Empate correcto no exacto</strong><span>Predices 1-1, fue 2-2</span><b>4 pts</b></li>
+              <li><strong>Diferencia de gol + ganador</strong><span>Predices 2-0, fue 3-1</span><b>4 pts</b></li>
+              <li><strong>Solo ganador</strong><span>Predices 2-0, fue 4-1</span><b>3 pts</b></li>
+              <li><strong>Errado</strong><span>Predices empate, gano alguien</span><b>0 pts</b></li>
+            </ul>
+          </article>
+          <article class="rules-card accent">
+            <h2>Bonus de eliminacion</h2>
+            <p>
+              En fase eliminatoria, acertar el ganador final incluyendo penales suma 1 punto
+              extra. Equivocarse con el ganador final resta 1 punto.
+            </p>
+          </article>
+          <article class="rules-card">
+            <h2>Modo oficial</h2>
+            <p>
+              Los jugadores solo predicen partidos desbloqueados por el organizador. La app
+              trae los grupos cargados y permite abrir el torneo tanda por tanda.
+            </p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <dialog id="playerDialog">
+      <form method="dialog" id="playerForm">
+        <h2>Nuevo jugador</h2>
+        <label>
+          Nombre
+          <input id="playerName" maxlength="32" placeholder="Nombre o apodo" required />
+        </label>
+        <div class="dialog-actions">
+          <button class="button secondary" value="cancel" type="button" id="cancelPlayerButton">
+            Cancelar
+          </button>
+          <button class="button" value="default" type="submit">Crear</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

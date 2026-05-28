@@ -1,0 +1,9 @@
+{
+  "name": "Prode Mundial 2026",
+  "short_name": "Prode 2026",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#071523",
+  "theme_color": "#102236",
+  "icons": []
+}
