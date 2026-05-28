@@ -230,14 +230,32 @@ function renderPredictions() {
     if (currentFilter === "finished") return match.final;
     return true;
   });
+  const groupedMatches = groupMatches(matches);
 
   elements.predictionList.innerHTML = matches.length
-    ? matches.map((match) => renderPredictionCard(match, activePlayer.id)).join("")
+    ? groupedMatches.map((group) => renderPredictionGroup(group, activePlayer.id)).join("")
     : `<div class="empty-state">No hay partidos para este filtro.</div>`;
 
   elements.predictionList.querySelectorAll("[data-prediction]").forEach((input) => {
     input.addEventListener("input", handlePredictionInput);
   });
+}
+
+function renderPredictionGroup(group, playerId) {
+  return `
+    <section class="group-card">
+      <header class="group-head">
+        <div>
+          <span class="group-kicker">${group.kicker}</span>
+          <h3>${escapeHtml(group.title)}</h3>
+        </div>
+        <span class="badge">${group.matches.length} partidos</span>
+      </header>
+      <div class="group-match-list">
+        ${group.matches.map((match) => renderPredictionCard(match, playerId)).join("")}
+      </div>
+    </section>
+  `;
 }
 
 function renderPredictionCard(match, playerId) {
@@ -329,7 +347,24 @@ function calculateLeaderboard() {
 }
 
 function renderAdmin() {
-  elements.adminMatchList.innerHTML = state.matches.map(renderAdminMatch).join("");
+  elements.adminMatchList.innerHTML = groupMatches(state.matches)
+    .map(
+      (group) => `
+        <section class="group-card admin-group">
+          <header class="group-head">
+            <div>
+              <span class="group-kicker">${group.kicker}</span>
+              <h3>${escapeHtml(group.title)}</h3>
+            </div>
+            <span class="badge">${group.matches.length} partidos</span>
+          </header>
+          <div class="group-match-list">
+            ${group.matches.map(renderAdminMatch).join("")}
+          </div>
+        </section>
+      `,
+    )
+    .join("");
 
   elements.adminMatchList.querySelectorAll("[data-admin-score]").forEach((input) => {
     input.addEventListener("input", handleAdminScoreInput);
@@ -405,6 +440,30 @@ function handleAdminWinner(event) {
 
 function findMatch(matchId) {
   return state.matches.find((match) => match.id === matchId);
+}
+
+function groupMatches(matches) {
+  const groupOrder = Object.keys(GROUPS);
+  const groups = groupOrder
+    .map((groupKey) => ({
+      key: groupKey,
+      kicker: "Grupo",
+      title: `Grupo ${groupKey}`,
+      matches: matches.filter((match) => match.group === groupKey),
+    }))
+    .filter((group) => group.matches.length);
+
+  const knockoutMatches = matches.filter((match) => !match.group);
+  if (knockoutMatches.length) {
+    groups.push({
+      key: "KO",
+      kicker: "Llaves",
+      title: "Eliminacion",
+      matches: knockoutMatches,
+    });
+  }
+
+  return groups;
 }
 
 function scorePrediction(prediction, match) {

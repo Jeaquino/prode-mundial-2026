@@ -241,6 +241,50 @@ dialog {
   gap: 10px;
 }
 
+.match-grid,
+.admin-list {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+  align-items: start;
+}
+
+.group-card {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  border: 1px solid rgba(116, 200, 244, 0.22);
+  border-radius: 8px;
+  background: rgba(7, 21, 35, 0.24);
+  padding: 12px;
+}
+
+.group-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid rgba(116, 200, 244, 0.14);
+  padding-bottom: 10px;
+}
+
+.group-head h3 {
+  margin-bottom: 0;
+  font-size: 1.18rem;
+}
+
+.group-kicker {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--blue);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.group-match-list {
+  display: grid;
+  gap: 10px;
+}
+
 .match-card,
 .ranking-row,
 .admin-match {
@@ -263,6 +307,11 @@ dialog {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+}
+
+.group-card .match-card,
+.group-card .admin-match {
+  box-shadow: none;
 }
 
 .match-meta {
