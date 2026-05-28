@@ -43,11 +43,12 @@ const elements = {
 
 document.querySelectorAll(".tab").forEach((button) => {
   button.addEventListener("click", () => {
-    document.querySelectorAll(".tab").forEach((tab) => tab.classList.remove("active"));
-    document.querySelectorAll(".panel").forEach((panel) => panel.classList.remove("active"));
-    button.classList.add("active");
-    document.querySelector(`#${button.dataset.tab}Panel`).classList.add("active");
+    setActiveTab(button.dataset.tab);
   });
+});
+
+document.querySelectorAll("[data-tab-jump]").forEach((button) => {
+  button.addEventListener("click", () => setActiveTab(button.dataset.tabJump));
 });
 
 document.querySelectorAll("[data-filter]").forEach((button) => {
@@ -131,6 +132,14 @@ elements.importInput.addEventListener("change", async (event) => {
   saveAndRender();
   event.target.value = "";
 });
+
+function setActiveTab(tabName) {
+  document.querySelectorAll(".tab").forEach((tab) => {
+    tab.classList.toggle("active", tab.dataset.tab === tabName);
+  });
+  document.querySelectorAll(".panel").forEach((panel) => panel.classList.remove("active"));
+  document.querySelector(`#${tabName}Panel`).classList.add("active");
+}
 
 function createInitialState() {
   const matches = [];
