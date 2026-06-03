@@ -1,0 +1,145 @@
+.match-grid,
+.admin-list,
+.ranking {
+  display: grid;
+  gap: 10px;
+}
+
+.match-grid,
+.admin-list {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+  align-items: start;
+}
+
+.group-card {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  border: 1px solid rgba(116, 200, 244, 0.22);
+  border-radius: 8px;
+  background: rgba(7, 21, 35, 0.24);
+  padding: 12px;
+}
+
+.group-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid rgba(116, 200, 244, 0.14);
+  padding-bottom: 10px;
+}
+
+.group-head h3 {
+  margin-bottom: 0;
+  font-size: 1.18rem;
+}
+
+.group-kicker {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--blue);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.group-match-list {
+  display: grid;
+  gap: 10px;
+}
+
+.match-card,
+.ranking-row,
+.admin-match {
+  border: 1px solid rgba(116, 200, 244, 0.18);
+  border-radius: 8px;
+  background: rgba(23, 43, 67, 0.86);
+  padding: 14px;
+}
+
+.match-card.locked {
+  opacity: 0.62;
+}
+
+.match-head,
+.team-line,
+.result-line,
+.ranking-row,
+.admin-match {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.group-card .match-card,
+.group-card .admin-match {
+  box-shadow: none;
+}
+
+.match-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  border-radius: 999px;
+  padding: 0 9px;
+  background: rgba(116, 200, 244, 0.12);
+  color: var(--blue);
+}
+
+.badge.final {
+  background: rgba(112, 224, 163, 0.14);
+  color: var(--green);
+}
+
+.badge.locked {
+  background: rgba(255, 211, 92, 0.12);
+  color: var(--yellow);
+}
+
+.team-line {
+  margin: 12px 0;
+}
+
+.teams {
+  min-width: 0;
+  font-weight: 900;
+}
+
+.teams span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.score-inputs {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.score-inputs input {
+  width: 58px;
+  padding: 0;
+  text-align: center;
+}
+
+.points {
+  color: var(--green);
+  font-weight: 900;
+}
+
+.points.negative {
+  color: var(--red);
+}

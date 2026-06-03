@@ -1,0 +1,67 @@
+.admin-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.admin-form {
+  border-radius: 8px;
+  margin-bottom: 14px;
+  padding: 16px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 150px auto;
+  gap: 10px;
+  align-items: end;
+}
+
+.form-grid label,
+#loginForm label,
+#adminLoginForm label {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
+.form-note {
+  min-height: 22px;
+  margin: 10px 0 0;
+  color: var(--yellow);
+  font-size: 0.9rem;
+}
+
+.admin-match {
+  flex-wrap: wrap;
+}
+
+.admin-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.admin-controls input {
+  width: 54px;
+  padding: 0;
+  text-align: center;
+}
+
+.admin-controls label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
+.admin-controls input[type="checkbox"] {
+  width: 18px;
+  min-height: 18px;
+}

@@ -1,0 +1,55 @@
+<section class="panel" id="adminPanel">
+  <div class="toolbar">
+    <div>
+      <h2>Administracion del prode</h2>
+      <p>Desbloquea fechas, carga resultados y suma partidos de eliminacion.</p>
+    </div>
+    <div class="admin-actions">
+      <button class="button" id="unlockNextButton" type="button">Abrir proxima tanda</button>
+      <button class="button secondary" id="exportAdminButton" type="button">Exportar JSON</button>
+    </div>
+  </div>
+
+  <form class="admin-form" id="adminPlayerForm">
+    <h3>Crear jugador</h3>
+    <div class="form-grid">
+      <label>
+        Nombre
+        <input id="newPlayerName" required placeholder="Nombre o apodo" />
+      </label>
+      <label>
+        PIN
+        <input id="newPlayerPin" inputmode="numeric" placeholder="Automatico" />
+      </label>
+      <button class="button" type="submit">Crear jugador</button>
+    </div>
+    <p class="form-note" id="createdPlayerNote"></p>
+  </form>
+
+  <form class="admin-form" id="knockoutForm">
+    <h3>Agregar partido de eliminacion</h3>
+    <div class="form-grid">
+      <label>
+        Equipo A
+        <input id="knockoutHome" required placeholder="Argentina" />
+      </label>
+      <label>
+        Equipo B
+        <input id="knockoutAway" required placeholder="Brasil" />
+      </label>
+      <label>
+        Ronda
+        <select id="knockoutRound">
+          <option value="R32">16avos</option>
+          <option value="R16">Octavos</option>
+          <option value="QF">Cuartos</option>
+          <option value="SF">Semifinal</option>
+          <option value="F">Final</option>
+        </select>
+      </label>
+      <button class="button" type="submit">Agregar</button>
+    </div>
+  </form>
+
+  <div class="admin-list" id="adminMatchList"></div>
+</section>

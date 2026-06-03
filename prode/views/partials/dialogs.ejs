@@ -1,0 +1,33 @@
+<dialog id="loginDialog">
+  <form method="dialog" id="loginForm">
+    <h2>Entrar al prode</h2>
+    <label>
+      Jugador
+      <select id="loginPlayerSelect"></select>
+    </label>
+    <label>
+      PIN
+      <input id="loginPin" inputmode="numeric" autocomplete="one-time-code" required />
+    </label>
+    <div class="dialog-actions">
+      <button class="button secondary" value="cancel" type="button" id="cancelLoginButton">Cancelar</button>
+      <button class="button" value="default" type="submit">Entrar</button>
+    </div>
+    <p class="form-note" id="loginError"></p>
+  </form>
+</dialog>
+
+<dialog id="adminDialog">
+  <form method="dialog" id="adminLoginForm">
+    <h2>Entrar como admin</h2>
+    <label>
+      Codigo admin
+      <input id="adminCode" type="password" autocomplete="current-password" required />
+    </label>
+    <div class="dialog-actions">
+      <button class="button secondary" value="cancel" type="button" id="cancelAdminButton">Cancelar</button>
+      <button class="button" value="default" type="submit">Entrar</button>
+    </div>
+    <p class="form-note" id="adminLoginError"></p>
+  </form>
+</dialog>

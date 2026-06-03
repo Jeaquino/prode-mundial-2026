@@ -1,0 +1,32 @@
+.ranking {
+  display: grid;
+  gap: 10px;
+}
+
+.ranking-row {
+  min-height: 64px;
+}
+
+.rank-number {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  background: rgba(112, 224, 163, 0.13);
+  color: var(--green);
+  font-weight: 900;
+}
+
+.rank-info {
+  flex: 1;
+}
+
+.rank-info strong {
+  display: block;
+}
+
+.rank-info span {
+  color: var(--muted);
+  font-size: 0.86rem;
+}

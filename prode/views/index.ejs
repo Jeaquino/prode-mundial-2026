@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><%= title %></title>
+    <meta
+      name="description"
+      content="Aplicacion web para organizar un prode del Mundial 2026 con grupos privados, reglas de puntaje y ranking."
+    />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="stylesheet" href="/stylesheets/base.css" />
+    <link rel="stylesheet" href="/stylesheets/home.css" />
+    <link rel="stylesheet" href="/stylesheets/predictions.css" />
+    <link rel="stylesheet" href="/stylesheets/ranking.css" />
+    <link rel="stylesheet" href="/stylesheets/admin.css" />
+    <link rel="stylesheet" href="/stylesheets/dialogs.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">Mundial 2026</p>
+        <img class="brand-logo" src="/images/cencopay-logo.svg" alt="CencoPay" />
+      </div>
+      <div class="header-actions">
+        <span class="session-pill" id="sessionStatus">Sin sesion</span>
+        <button class="button" id="loginButton" type="button">Entrar</button>
+        <button class="button secondary" id="adminLoginButton" type="button">Admin</button>
+        <button class="button secondary hidden" id="logoutButton" type="button">Salir</button>
+      </div>
+    </header>
+
+    <main class="app-shell">
+      <section class="score-strip" aria-label="Resumen">
+        <article class="summary-carousel">
+          <div class="carousel-copy">
+            <p id="summaryKicker">Resumen</p>
+            <span class="carousel-date hidden" id="summaryDate"></span>
+            <strong id="summaryValue">Cargando...</strong>
+            <span id="summaryMeta">Preparando el prode.</span>
+          </div>
+          <div class="carousel-dots" id="summaryDots" aria-hidden="true"></div>
+        </article>
+      </section>
+
+      <nav class="tabs" aria-label="Secciones">
+        <button class="tab active" data-tab="home" type="button">Inicio</button>
+        <button class="tab" data-tab="predictions" type="button">Pronosticos</button>
+        <button class="tab" data-tab="ranking" type="button">Ranking</button>
+        <button class="tab" data-tab="admin" type="button">Admin</button>
+      </nav>
+
+      <%- include('partials/home') %>
+      <%- include('partials/predictions') %>
+      <%- include('partials/ranking') %>
+      <%- include('partials/admin') %>
+    </main>
+
+    <%- include('partials/dialogs') %>
+
+    <script type="module" src="/javascripts/app.js"></script>
+  </body>
+</html>
