@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar Sesión</title>
+  <link rel="stylesheet" href="/stylesheets/base.css" />
+  <link rel="stylesheet" href="/stylesheets/login.css" />
+</head>
+
+<body>
+  <div class="container">
+    <h1>Iniciar Sesión</h1>
+    
+    <% if (typeof success !== 'undefined' && success) { %>
+    <div class="alert alert-success">
+      <p><%= success %></p>
+    </div>
+    <% } %>
+
+    <form id="loginForm" action="/users/login" method="POST" novalidate>
+      <div class="field">
+        <label for="email">Correo electrónico</label>
+        <input 
+          type="email" 
+          id="email" 
+          name="email" 
+          value="<%= locals.old && locals.old.email ? locals.old.email : '' %>" 
+          required 
+          placeholder="ejemplo@dominio.com" 
+        />
+        <div class="error-message" id="emailError"></div>
+      </div>
+
+      <div class="field">
+        <label for="password">Contraseña</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          required 
+          placeholder="Ingresa tu contraseña" 
+        />
+        <div class="error-message" id="passwordError"></div>
+      </div>
+
+
+          <% if (locals.errors) { %>
+            <div class="error-message show">
+                <% if (locals.errors.password) { %>
+                    <p><%= locals.errors.password.msg %></p>
+                <% }else if (locals.errors.email) { %>
+                    <p><%= locals.errors.email.msg %></p>
+                <% } %>
+            </div>
+          <% } %>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+      </div>
+
+      <div class="form-footer">
+        <p>¿No tienes cuenta? <a href="/users/register">Regístrate aquí</a></p>
+      </div>
+    </form>
+  </div>
+
+  <script src="/javascripts/login.js"></script>
+</body>
+
+</html>

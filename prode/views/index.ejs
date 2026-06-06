@@ -23,10 +23,24 @@
         <img class="brand-logo" src="/images/cencopay-logo.svg" alt="CencoPay" />
       </div>
       <div class="header-actions">
-        <span class="session-pill" id="sessionStatus">Sin sesion</span>
-        <button class="button" id="loginButton" type="button">Entrar</button>
-        <button class="button secondary" id="adminLoginButton" type="button">Admin</button>
-        <button class="button secondary hidden" id="logoutButton" type="button">Salir</button>
+        <!-- <span class="session-pill" id="sessionStatus">Sin sesion</span> -->
+        <% if (locals.usuario) { %>
+          <span class="session-pill">Hola, <%= locals.usuario.username %></span>
+
+          <a href="/users/login">
+            <button class="button" id="loginButton" type="button">Logout</button>
+          </a>
+        <%}else{%>
+
+        <a href="/users/login">
+          <button class="button" id="loginButton" type="button">Login</button>
+        </a>
+        <!-- <button class="button secondary" id="adminLoginButton" type="button">Admin</button> -->
+        <a href="/users/register">
+          <button class="button secondary" id="adminLoginButton" type="button">register</button>
+        </a>
+        <% } %>
+        <!-- <button class="button secondary hidden" id="logoutButton" type="button">Salir</button> -->
       </div>
     </header>
 
@@ -58,6 +72,6 @@
 
     <%- include('partials/dialogs') %>
 
-    <script type="module" src="/javascripts/app.js"></script>
+    <!-- <script type="module" src="/javascripts/app.js"></script> -->
   </body>
 </html>

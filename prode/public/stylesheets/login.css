@@ -1,0 +1,200 @@
+:root {
+  color-scheme: dark;
+}
+
+.container {
+  width: min(400px, calc(100% - 32px));
+  margin: 60px auto 32px;
+  padding: 32px;
+  border: 1px solid rgba(112, 224, 163, 0.18);
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(112, 224, 163, 0.12), rgba(7, 21, 35, 0.96));
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
+}
+
+.container h1 {
+  margin-bottom: 24px;
+  font-size: clamp(2rem, 4vw, 2.5rem);
+  text-align: center;
+  color: var(--text);
+}
+
+.alert {
+  margin-bottom: 22px;
+  padding: 16px 18px;
+  border-radius: 16px;
+  border: 1px solid;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.alert-error {
+  border-color: rgba(255, 109, 122, 0.22);
+  background: rgba(255, 109, 122, 0.08);
+  color: #ff6d7a;
+}
+
+.alert-success {
+  border-color: rgba(112, 224, 163, 0.22);
+  background: rgba(112, 224, 163, 0.08);
+  color: #70e0a3;
+}
+
+.alert ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.alert li {
+  color: inherit;
+}
+
+.alert p {
+  margin: 0;
+  color: inherit;
+}
+
+.field {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.field label {
+  color: var(--text);
+  font-weight: 700;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.field input {
+  padding: 12px 16px;
+  border: 1px solid rgba(112, 224, 163, 0.18);
+  border-radius: 12px;
+  background: rgba(112, 224, 163, 0.04);
+  color: var(--text);
+  font-size: 14px;
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+
+.field input:focus {
+  outline: none;
+  border-color: rgba(112, 224, 163, 0.5);
+  background: rgba(112, 224, 163, 0.08);
+  box-shadow: 0 0 0 3px rgba(112, 224, 163, 0.1);
+}
+
+.field input.error {
+  border-color: rgba(255, 109, 122, 0.5);
+  background: rgba(255, 109, 122, 0.04);
+}
+
+.field input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.error-message {
+  display: none;
+  font-size: 13px;
+  color: #ff6d7a;
+  margin-top: -8px;
+  padding: 0 4px;
+}
+
+.error-message.show {
+  display: block;
+}
+
+.form-actions {
+  margin: 28px 0 24px;
+}
+
+.btn {
+  width: 100%;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, rgba(112, 224, 163, 0.8), rgba(112, 224, 163, 0.6));
+  color: #071523;
+  border: 1px solid rgba(112, 224, 163, 0.3);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, rgba(112, 224, 163, 1), rgba(112, 224, 163, 0.8));
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(112, 224, 163, 0.3);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(112, 224, 163, 0.2);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.form-footer {
+  text-align: center;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(112, 224, 163, 0.1);
+}
+
+.form-footer p {
+  margin: 0;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.form-footer a {
+  color: rgba(112, 224, 163, 0.9);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.form-footer a:hover {
+  color: rgba(112, 224, 163, 1);
+  text-decoration: underline;
+}
+
+/* Responsivo */
+@media (max-width: 480px) {
+  .container {
+    margin: 40px auto 20px;
+    padding: 24px;
+    border-radius: 16px;
+  }
+
+  .container h1 {
+    margin-bottom: 20px;
+    font-size: 1.75rem;
+  }
+
+  .field input {
+    padding: 10px 14px;
+    font-size: 16px;
+  }
+
+  .btn {
+    padding: 11px 14px;
+    font-size: 14px;
+  }
+}

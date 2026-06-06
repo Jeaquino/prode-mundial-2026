@@ -14,8 +14,8 @@ module.exports = {
         username: 'admin',
         email: 'admin@prode.com',
         password_hash: adminPassword,
-        createdAt: now,
-        updatedAt: now
+        created_at: now,
+        updated_at: now
       }
     ], {});
   },

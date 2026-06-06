@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemom ./bin/www"
+    "start": "nodemon ./bin/www",
+    "dbinit": "npx sequelize  db:create && npx sequelize  db:migrate && npx sequelize db:seed:all",
+    "dbreset": "npx sequelize db:drop && npx sequelize  db:create && npx sequelize  db:migrate && npx sequelize db:seed:all"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
@@ -13,8 +15,13 @@
     "dotenv": "^17.4.2",
     "ejs": "~2.6.1",
     "express": "~4.16.1",
+    "express-session": "^1.19.0",
+    "express-validator": "^7.3.2",
     "http-errors": "~1.6.3",
+    "jsonwebtoken": "^9.0.3",
     "morgan": "~1.9.1",
-    "mysql2": "^3.22.4"
+    "mysql2": "^3.22.4",
+    "sequelize": "^6.37.8",
+    "uuid": "^14.0.0"
   }
 }
