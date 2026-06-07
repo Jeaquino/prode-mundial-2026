@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { register, storeUser, login, getAllUsers, getUserById, initSession } = require('../controllers/usuarios');
+const { register, storeUser, login, getAllUsers, getUserById, initSession, logout } = require('../controllers/usuarios');
 const registerUserValide = require('../middleware/registerUserValide');
 const loginVerify = require('../middleware/loginValidate');
 
@@ -10,6 +10,7 @@ router
   .get('/login', login)
   .post('/login', loginVerify, initSession)
   .get('/users', loginVerify, getAllUsers)
-  .get('/users/:id', loginVerify, getUserById);
+  .get('/users/:id', loginVerify, getUserById)
+  .get('/logout', logout);
 
 module.exports = router;

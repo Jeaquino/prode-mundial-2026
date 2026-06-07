@@ -27,9 +27,10 @@
         <% if (locals.usuario) { %>
           <span class="session-pill">Hola, <%= locals.usuario.username %></span>
 
-          <a href="/users/login">
-            <button class="button" id="loginButton" type="button">Logout</button>
+          <a href="/users/logout">
+            <button class="button" id="logoutButton" type="button">Logout</button>
           </a>
+          
         <%}else{%>
 
         <a href="/users/login">
@@ -59,9 +60,11 @@
 
       <nav class="tabs" aria-label="Secciones">
         <button class="tab active" data-tab="home" type="button">Inicio</button>
-        <button class="tab" data-tab="predictions" type="button">Pronosticos</button>
-        <button class="tab" data-tab="ranking" type="button">Ranking</button>
-        <button class="tab" data-tab="admin" type="button">Admin</button>
+        <% if (locals.usuario) { %>
+          <button class="tab" data-tab="predictions" type="button">Pronosticos</button>
+          <button class="tab" data-tab="ranking" type="button">Ranking</button>
+          <button class="tab" data-tab="admin" type="button">Admin</button>
+        <% } %>
       </nav>
 
       <%- include('partials/home') %>
@@ -73,5 +76,6 @@
     <%- include('partials/dialogs') %>
 
     <!-- <script type="module" src="/javascripts/app.js"></script> -->
+    <script src="/javascripts/index.js"></script>
   </body>
 </html>

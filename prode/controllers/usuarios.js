@@ -37,6 +37,14 @@ const login = async (req, res) => {
   res.render('users/login');
 }
 
+const logout = (req, res) => {
+  
+      req.session.destroy();
+      res.clearCookie("user");
+      res.redirect('/dashboard');
+
+};
+
 const initSession = async (req, res) => {
   
   const errors = validationResult(req);
@@ -50,10 +58,10 @@ const initSession = async (req, res) => {
     const { email, password } = req.body;
     const user = await Usuario.findOne({
       where: { email },
-      attributes: ['username', 'email']
+      attributes: ['id', 'username', 'email']
     });
     
-    req.session.usuario = { username: user.username, email: user.email };
+    req.session.usuario = {id: user.id, username: user.username, email: user.email };
     req.session.autenticado = true;
 
     res.redirect('/dashboard');
@@ -86,4 +94,4 @@ const getUserById = async (req, res) => {
 };
 
 
-module.exports = { register, login, getAllUsers, getUserById, storeUser, initSession };
+module.exports = { register, login, getAllUsers, getUserById, storeUser, initSession, logout };
