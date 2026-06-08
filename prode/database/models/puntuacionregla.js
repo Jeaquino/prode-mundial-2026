@@ -15,10 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'PuntuacionRegla',
     tableName: 'PuntuacionReglas',
-    timestamps: true,
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt',
-    underscored: true
+    timestamps: true
   });
 
   return PuntuacionRegla;

@@ -22,10 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Estadio',
     tableName: 'Estadios',
-    timestamps: true,
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt',
-    underscored: true
+    timestamps: true
   });
 
   return Estadio;

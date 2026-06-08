@@ -39,10 +39,7 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Partido',
     tableName: 'Partidos',
-    timestamps: true,
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt',
-    underscored: true
+    timestamps: true
   });
 
   return Partido;

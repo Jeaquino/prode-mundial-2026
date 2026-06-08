@@ -14,6 +14,7 @@ module.exports = {
         username: 'admin',
         email: 'admin@prode.com',
         password_hash: adminPassword,
+        rol: 'admin',
         created_at: now,
         updated_at: now
       }

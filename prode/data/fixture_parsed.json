@@ -1,0 +1,508 @@
+{
+  "partidos": [
+    {
+      "fecha": "2026-06-11T18:00:00.000Z",
+      "grupo": "A",
+      "local": "México",
+      "visitante": "Sudáfrica",
+      "estadio": "Ciudad de México"
+    },
+    {
+      "fecha": "2026-06-12T01:00:00.000Z",
+      "grupo": "A",
+      "local": "Corea del Sur",
+      "visitante": "República Checa",
+      "estadio": "Guadalajara"
+    },
+    {
+      "fecha": "2026-06-12T18:00:00.000Z",
+      "grupo": "B",
+      "local": "Canadá",
+      "visitante": "Bosnia y Herzegovina",
+      "estadio": "Toronto"
+    },
+    {
+      "fecha": "2026-06-13T00:00:00.000Z",
+      "grupo": "D",
+      "local": "Estados Unidos",
+      "visitante": "Paraguay",
+      "estadio": "Los Ángeles"
+    },
+    {
+      "fecha": "2026-06-13T18:00:00.000Z",
+      "grupo": "B",
+      "local": "Qatar",
+      "visitante": "Suiza",
+      "estadio": "Bahía de San Francisco"
+    },
+    {
+      "fecha": "2026-06-13T21:00:00.000Z",
+      "grupo": "C",
+      "local": "Brasil",
+      "visitante": "Marruecos",
+      "estadio": "Nueva York Nueva Jersey"
+    },
+    {
+      "fecha": "2026-06-14T00:00:00.000Z",
+      "grupo": "C",
+      "local": "Haití",
+      "visitante": "Escocia",
+      "estadio": "Boston"
+    },
+    {
+      "fecha": "2026-06-13T03:00:00.000Z",
+      "grupo": "D",
+      "local": "Australia",
+      "visitante": "Turquía",
+      "estadio": "BC Place Vancouver"
+    },
+    {
+      "fecha": "2026-06-14T16:00:00.000Z",
+      "grupo": "E",
+      "local": "Alemania",
+      "visitante": "Curazao",
+      "estadio": "Houston"
+    },
+    {
+      "fecha": "2026-06-14T19:00:00.000Z",
+      "grupo": "F",
+      "local": "Países Bajos",
+      "visitante": "Japón",
+      "estadio": "Dallas"
+    },
+    {
+      "fecha": "2026-06-14T22:00:00.000Z",
+      "grupo": "E",
+      "local": "Costa de Marfil",
+      "visitante": "Ecuador",
+      "estadio": "Filadelfia"
+    },
+    {
+      "fecha": "2026-06-15T01:00:00.000Z",
+      "grupo": "F",
+      "local": "Suecia",
+      "visitante": "Túnez",
+      "estadio": "Monterrey"
+    },
+    {
+      "fecha": "2026-06-15T15:00:00.000Z",
+      "grupo": "H",
+      "local": "España",
+      "visitante": "Cabo Verde",
+      "estadio": "Atlanta"
+    },
+    {
+      "fecha": "2026-06-15T18:00:00.000Z",
+      "grupo": "G",
+      "local": "Bélgica",
+      "visitante": "Egipto",
+      "estadio": "Seattle"
+    },
+    {
+      "fecha": "2026-06-15T21:00:00.000Z",
+      "grupo": "H",
+      "local": "Arabia Saudita",
+      "visitante": "Uruguay",
+      "estadio": "Miami"
+    },
+    {
+      "fecha": "2026-06-16T00:00:00.000Z",
+      "grupo": "G",
+      "local": "Irán",
+      "visitante": "Nueva Zelanda",
+      "estadio": "Los Ángeles"
+    },
+    {
+      "fecha": "2026-06-16T18:00:00.000Z",
+      "grupo": "I",
+      "local": "Francia",
+      "visitante": "Senegal",
+      "estadio": "Nueva York Nueva Jersey"
+    },
+    {
+      "fecha": "2026-06-16T21:00:00.000Z",
+      "grupo": "I",
+      "local": "Irak",
+      "visitante": "Noruega",
+      "estadio": "Boston"
+    },
+    {
+      "fecha": "2026-06-17T00:00:00.000Z",
+      "grupo": "J",
+      "local": "Argentina",
+      "visitante": "Argelia",
+      "estadio": "Kansas City"
+    },
+    {
+      "fecha": "2026-06-16T03:00:00.000Z",
+      "grupo": "J",
+      "local": "Austria",
+      "visitante": "Jordania",
+      "estadio": "Bahía de San Francisco"
+    },
+    {
+      "fecha": "2026-06-17T16:00:00.000Z",
+      "grupo": "K",
+      "local": "Portugal",
+      "visitante": "RD Congo",
+      "estadio": "Houston"
+    },
+    {
+      "fecha": "2026-06-17T19:00:00.000Z",
+      "grupo": "L",
+      "local": "Inglaterra",
+      "visitante": "Croacia",
+      "estadio": "Dallas"
+    },
+    {
+      "fecha": "2026-06-17T22:00:00.000Z",
+      "grupo": "L",
+      "local": "Ghana",
+      "visitante": "Panamá",
+      "estadio": "Toronto"
+    },
+    {
+      "fecha": "2026-06-18T01:00:00.000Z",
+      "grupo": "K",
+      "local": "Uzbekistán",
+      "visitante": "Colombia",
+      "estadio": "Ciudad de México"
+    },
+    {
+      "fecha": "2026-06-18T15:00:00.000Z",
+      "grupo": "A",
+      "local": "República Checa",
+      "visitante": "Sudáfrica",
+      "estadio": "Atlanta"
+    },
+    {
+      "fecha": "2026-06-18T18:00:00.000Z",
+      "grupo": "B",
+      "local": "Suiza",
+      "visitante": "Bosnia y Herzegovina",
+      "estadio": "Los Ángeles"
+    },
+    {
+      "fecha": "2026-06-18T21:00:00.000Z",
+      "grupo": "B",
+      "local": "Canadá",
+      "visitante": "Qatar",
+      "estadio": "BC Place Vancouver"
+    },
+    {
+      "fecha": "2026-06-19T00:00:00.000Z",
+      "grupo": "A",
+      "local": "México",
+      "visitante": "República de Corea",
+      "estadio": "Guadalajara"
+    },
+    {
+      "fecha": "2026-06-19T18:00:00.000Z",
+      "grupo": "D",
+      "local": "Estados Unidos",
+      "visitante": "Australia",
+      "estadio": "Seattle"
+    },
+    {
+      "fecha": "2026-06-19T21:00:00.000Z",
+      "grupo": "C",
+      "local": "Escocia",
+      "visitante": "Marruecos",
+      "estadio": "Boston"
+    },
+    {
+      "fecha": "2026-06-20T00:00:00.000Z",
+      "grupo": "C",
+      "local": "Brasil",
+      "visitante": "Haití",
+      "estadio": "Filadelfia"
+    },
+    {
+      "fecha": "2026-06-19T03:00:00.000Z",
+      "grupo": "D",
+      "local": "Turquía",
+      "visitante": "Paraguay",
+      "estadio": "Bahía de San Francisco"
+    },
+    {
+      "fecha": "2026-06-20T16:00:00.000Z",
+      "grupo": "F",
+      "local": "Países Bajos",
+      "visitante": "Suecia",
+      "estadio": "Houston"
+    },
+    {
+      "fecha": "2026-06-20T19:00:00.000Z",
+      "grupo": "E",
+      "local": "Alemania",
+      "visitante": "Costa de Marfil",
+      "estadio": "Toronto"
+    },
+    {
+      "fecha": "2026-06-21T01:00:00.000Z",
+      "grupo": "E",
+      "local": "Ecuador",
+      "visitante": "Curazao",
+      "estadio": "Kansas City"
+    },
+    {
+      "fecha": "2026-06-20T03:00:00.000Z",
+      "grupo": "F",
+      "local": "Túnez",
+      "visitante": "Japón",
+      "estadio": "Monterrey"
+    },
+    {
+      "fecha": "2026-06-21T15:00:00.000Z",
+      "grupo": "H",
+      "local": "España",
+      "visitante": "Arabia Saudita",
+      "estadio": "Atlanta"
+    },
+    {
+      "fecha": "2026-06-21T18:00:00.000Z",
+      "grupo": "G",
+      "local": "Bélgica",
+      "visitante": "Irán",
+      "estadio": "Los Ángeles"
+    },
+    {
+      "fecha": "2026-06-21T21:00:00.000Z",
+      "grupo": "H",
+      "local": "Uruguay",
+      "visitante": "Cabo Verde",
+      "estadio": "Miami"
+    },
+    {
+      "fecha": "2026-06-22T00:00:00.000Z",
+      "grupo": "G",
+      "local": "Nueva Zelanda",
+      "visitante": "Egipto",
+      "estadio": "BC Place Vancouver"
+    },
+    {
+      "fecha": "2026-06-22T16:00:00.000Z",
+      "grupo": "J",
+      "local": "Argentina",
+      "visitante": "Austria",
+      "estadio": "Dallas"
+    },
+    {
+      "fecha": "2026-06-22T20:00:00.000Z",
+      "grupo": "I",
+      "local": "Francia",
+      "visitante": "Irak",
+      "estadio": "Filadelfia"
+    },
+    {
+      "fecha": "2026-06-22T23:00:00.000Z",
+      "grupo": "I",
+      "local": "Noruega",
+      "visitante": "Senegal",
+      "estadio": "Nueva York Nueva Jersey"
+    },
+    {
+      "fecha": "2026-06-23T02:00:00.000Z",
+      "grupo": "J",
+      "local": "Jordania",
+      "visitante": "Argelia",
+      "estadio": "Bahía de San Francisco Bay"
+    },
+    {
+      "fecha": "2026-06-23T16:00:00.000Z",
+      "grupo": "K",
+      "local": "Portugal",
+      "visitante": "Uzbekistán",
+      "estadio": "Houston"
+    },
+    {
+      "fecha": "2026-06-23T19:00:00.000Z",
+      "grupo": "L",
+      "local": "Inglaterra",
+      "visitante": "Ghana",
+      "estadio": "Boston"
+    },
+    {
+      "fecha": "2026-06-23T22:00:00.000Z",
+      "grupo": "L",
+      "local": "Panamá",
+      "visitante": "Croacia",
+      "estadio": "Toronto"
+    },
+    {
+      "fecha": "2026-06-24T01:00:00.000Z",
+      "grupo": "K",
+      "local": "Colombia",
+      "visitante": "RD Congo",
+      "estadio": "Guadalajara"
+    },
+    {
+      "fecha": "2026-06-24T18:00:00.000Z",
+      "grupo": "B",
+      "local": "Suiza",
+      "visitante": "Canadá",
+      "estadio": "BC Place Vancouver"
+    },
+    {
+      "fecha": "2026-06-24T18:00:00.000Z",
+      "grupo": "B",
+      "local": "Bosnia y Herzegovina",
+      "visitante": "Qatar",
+      "estadio": "Seattle"
+    },
+    {
+      "fecha": "2026-06-24T21:00:00.000Z",
+      "grupo": "C",
+      "local": "Escocia",
+      "visitante": "Brasil",
+      "estadio": "Miami"
+    },
+    {
+      "fecha": "2026-06-24T21:00:00.000Z",
+      "grupo": "C",
+      "local": "Marruecos",
+      "visitante": "Haití",
+      "estadio": "Atlanta"
+    },
+    {
+      "fecha": "2026-06-25T00:00:00.000Z",
+      "grupo": "A",
+      "local": "República Checa",
+      "visitante": "México",
+      "estadio": "Ciudad de México"
+    },
+    {
+      "fecha": "2026-06-25T00:00:00.000Z",
+      "grupo": "A",
+      "local": "Sudáfrica",
+      "visitante": "República de Corea",
+      "estadio": "Monterrey"
+    },
+    {
+      "fecha": "2026-06-25T19:00:00.000Z",
+      "grupo": "E",
+      "local": "Curazao",
+      "visitante": "Costa de Marfil",
+      "estadio": "Filadelfia"
+    },
+    {
+      "fecha": "2026-06-25T19:00:00.000Z",
+      "grupo": "E",
+      "local": "Ecuador",
+      "visitante": "Alemania",
+      "estadio": "Nueva York Nueva Jersey"
+    },
+    {
+      "fecha": "2026-06-25T22:00:00.000Z",
+      "grupo": "F",
+      "local": "Japón",
+      "visitante": "Suecia",
+      "estadio": "Dallas"
+    },
+    {
+      "fecha": "2026-06-25T22:00:00.000Z",
+      "grupo": "F",
+      "local": "Túnez",
+      "visitante": "Países Bajos",
+      "estadio": "Kansas City"
+    },
+    {
+      "fecha": "2026-06-26T01:00:00.000Z",
+      "grupo": "D",
+      "local": "Turquía",
+      "visitante": "Estados Unidos",
+      "estadio": "Los Ángeles"
+    },
+    {
+      "fecha": "2026-06-26T01:00:00.000Z",
+      "grupo": "D",
+      "local": "Paraguay",
+      "visitante": "Australia",
+      "estadio": "Bahía de San Francisco"
+    },
+    {
+      "fecha": "2026-06-26T18:00:00.000Z",
+      "grupo": "I",
+      "local": "Noruega",
+      "visitante": "Francia",
+      "estadio": "Boston"
+    },
+    {
+      "fecha": "2026-06-26T18:00:00.000Z",
+      "grupo": "I",
+      "local": "Senegal",
+      "visitante": "Irak",
+      "estadio": "Toronto"
+    },
+    {
+      "fecha": "2026-06-26T23:00:00.000Z",
+      "grupo": "H",
+      "local": "Cabo Verde",
+      "visitante": "Arabia Saudita",
+      "estadio": "Houston"
+    },
+    {
+      "fecha": "2026-06-26T23:00:00.000Z",
+      "grupo": "H",
+      "local": "Uruguay",
+      "visitante": "España",
+      "estadio": "Guadalajara"
+    },
+    {
+      "fecha": "2026-06-27T02:00:00.000Z",
+      "grupo": "G",
+      "local": "Egipto",
+      "visitante": "Irán",
+      "estadio": "Seattle"
+    },
+    {
+      "fecha": "2026-06-27T02:00:00.000Z",
+      "grupo": "G",
+      "local": "Nueva Zelanda",
+      "visitante": "Bélgica",
+      "estadio": "BC Place Vancouver"
+    },
+    {
+      "fecha": "2026-06-27T20:00:00.000Z",
+      "grupo": "L",
+      "local": "Panamá",
+      "visitante": "Inglaterra",
+      "estadio": "Nueva York Nueva Jersey"
+    },
+    {
+      "fecha": "2026-06-27T20:00:00.000Z",
+      "grupo": "L",
+      "local": "Croacia",
+      "visitante": "Ghana",
+      "estadio": "Filadelfia"
+    },
+    {
+      "fecha": "2026-06-27T22:30:00.000Z",
+      "grupo": "K",
+      "local": "Colombia",
+      "visitante": "Portugal",
+      "estadio": "Miami"
+    },
+    {
+      "fecha": "2026-06-27T22:30:00.000Z",
+      "grupo": "K",
+      "local": "RD Congo",
+      "visitante": "Uzbekistán",
+      "estadio": "Atlanta"
+    },
+    {
+      "fecha": "2026-06-28T01:00:00.000Z",
+      "grupo": "J",
+      "local": "Argelia",
+      "visitante": "Austria",
+      "estadio": "Kansas City"
+    },
+    {
+      "fecha": "2026-06-28T01:00:00.000Z",
+      "grupo": "J",
+      "local": "Jordania",
+      "visitante": "Argentina",
+      "estadio": "Dallas"
+    }
+  ]
+}

@@ -25,9 +25,11 @@ const storeUser = async (req, res) => {
     const user = await Usuario.create({
       username: name,
       email,
-      password_hash: hashedPassword
+      password_hash: hashedPassword,
+      rol: 'usuario'
     });
-    res.redirect('/login', { user });
+
+    res.redirect('/users/login');
   } catch (error) {
     res.status(500).json({ message: 'Error creating user', error });
   }
