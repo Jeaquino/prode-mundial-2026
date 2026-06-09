@@ -1,4 +1,6 @@
 require('dotenv').config(); // Load your .env file
+const fs = require('fs');
+const path = require('path');
 
 module.exports = {
   development: {
@@ -7,6 +9,13 @@ module.exports = {
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
-    dialect: 'mysql'
+    dialect: 'mysql',
+    dialectOptions: {
+      ssl: {
+        require: true,
+        // Pasamos el contenido del certificado descargado
+        ca: fs.readFileSync(path.resolve(__dirname, '../../data/ca-db.pem')).toString()
+      }
+    }
   }
 };

@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
+    "start": "node ./bin/www",
     "dbinit": "npx sequelize  db:create && npx sequelize  db:migrate && npx sequelize db:seed:all",
     "dbreset": "npx sequelize db:drop && npx sequelize  db:create && npx sequelize  db:migrate && npx sequelize db:seed:all"
   },

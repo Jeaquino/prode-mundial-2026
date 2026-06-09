@@ -12,12 +12,12 @@ module.exports = {
 
     // Traer todos los equipos y estadios cargados
     const equipos = await queryInterface.sequelize.query(
-      `SELECT id, nombre FROM equipos ORDER BY nombre`,
+      `SELECT id, nombre FROM Equipos ORDER BY nombre`,
       { type: Sequelize.QueryTypes.SELECT }
     );
 
     const estadios = await queryInterface.sequelize.query(
-      `SELECT id, nombre FROM estadios ORDER BY nombre`,
+      `SELECT id, nombre FROM Estadios ORDER BY nombre`,
       { type: Sequelize.QueryTypes.SELECT }
     );
 
