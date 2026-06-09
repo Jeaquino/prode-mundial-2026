@@ -1,4 +1,4 @@
-require('dotenv').config();
+// require('dotenv').config();
 const { Equipo } = require('../models');
 
 const getAllEquipos = async (req, res) => {
