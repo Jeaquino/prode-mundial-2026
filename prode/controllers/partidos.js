@@ -1,4 +1,4 @@
-// require('dotenv').config();
+require('dotenv').config();
 const { Partido } = require('../database/models');
 
 const getAllMatchs = async (req, res) => {

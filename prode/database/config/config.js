@@ -1,9 +1,9 @@
-// require('dotenv').config(); // Load your .env file
+require('dotenv').config(); // Load your .env file
 const fs = require('fs');
 const path = require('path');
 
 module.exports = {
-  development: {
+  production: {
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
