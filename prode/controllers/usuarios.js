@@ -60,10 +60,10 @@ const initSession = async (req, res) => {
     const { email, password } = req.body;
     const user = await Usuario.findOne({
       where: { email },
-      attributes: ['id', 'username', 'email']
+      attributes: ['id', 'username', 'email','rol']
     });
     
-    req.session.usuario = {id: user.id, username: user.username, email: user.email };
+    req.session.usuario = {id: user.id, username: user.username, email: user.email, rol: user.rol };
     req.session.autenticado = true;
 
     res.redirect('/dashboard');
@@ -95,5 +95,56 @@ const getUserById = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  const errors = validationResult(req);
 
-module.exports = { register, login, getAllUsers, getUserById, storeUser, initSession, logout };
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  try {
+    const { id } = req.params;
+    const { name, email, password } = req.body;
+    const user = await Usuario.findByPk(id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await user.update({
+      username: name,
+      password_hash: hashedPassword
+    });
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating user', error });
+  }
+};
+
+const adminupdateUser = async (req, res) => {
+  const errors = validationResult(req); 
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  try {
+    const { id } = req.params;
+    const { name, email, password, rol } = req.body;
+    const user = await Usuario.findByPk(id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await user.update({
+      username: name,
+      password_hash: hashedPassword,
+      rol
+    });
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating user', error });
+  }
+};
+
+
+module.exports = { register, login, getAllUsers, getUserById, storeUser, initSession, logout, updateUser, adminupdateUser };

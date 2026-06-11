@@ -23,4 +23,5 @@ const getEquipoById = async (req, res) => {
   }
 };
 
+
 module.exports = { getAllEquipos, getEquipoById };

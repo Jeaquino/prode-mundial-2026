@@ -2,7 +2,7 @@ import { TOKEN_KEY, elements, state, api, adminAction, escapeHtml } from "./shar
 import { renderSummary, setupCarousel } from "./home.js";
 import { renderPredictions, attachPredictionHandlers } from "./predictions.js";
 import { renderRanking } from "./ranking.js";
-import { renderAdmin, attachAdminHandlers } from "./admin.js";
+import { renderAdmin, attachAdminHandlers, loadAndRenderUserTable, loadAndRenderPartidoTable, setupModalHandlers } from "./admin.js";
 
 let currentFilter = "open";
 
@@ -168,6 +168,13 @@ function render() {
   renderRanking();
   renderAdmin();
   attachAdminHandlers(adminAction, refresh);
+  setupModalHandlers();
+  
+  // Cargar tablas si el panel admin está activo
+  if (state.session?.role === "admin") {
+    loadAndRenderUserTable();
+    loadAndRenderPartidoTable();
+  }
 }
 
 function renderSession() {
