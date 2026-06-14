@@ -1,0 +1,83 @@
+<section class="panel active" id="homePanel">
+  <div class="home-intro">
+    <div>
+      <p class="eyebrow">Bienvenido</p>
+      <h2>Prode Mundial 2026</h2>
+      <p>
+        Carga tus pronosticos, seguí los resultados oficiales y competí en el ranking del equipo.
+      </p>
+    </div>
+    <div class="home-meta">
+      <p><strong>Hoy:</strong> <%= data.currentDate %></p>
+      <p><strong>Partidos cargados:</strong> <%= data.matches.length %></p>
+      <p><strong>Participantes:</strong> <%= data.players.length %></p>
+    </div>
+  </div>
+
+  <div class="rules-layout">
+    <article class="rules-card">
+      <h2>Como se ganan puntos</h2>
+      <p>Tu prediccion se compara con el resultado oficial del partido.</p>
+      <ul class="rules-list">
+        <li><strong>Marcador exacto</strong><span>Predices 2-1, fue 2-1</span><b>5 pts</b></li>
+        <li><strong>Empate correcto no exacto</strong><span>Predices 1-1, fue 2-2</span><b>4 pts</b></li>
+        <li><strong>Diferencia de gol + ganador</strong><span>Predices 2-0, fue 3-1</span><b>4 pts</b></li>
+        <li><strong>Solo ganador</strong><span>Predices 2-0, fue 4-1</span><b>3 pts</b></li>
+        <li><strong>Errado</strong><span>Predices empate, gano alguien</span><b>0 pts</b></li>
+      </ul>
+    </article>
+    <article class="rules-card accent">
+      <h2>Etapas</h2>
+      <p>
+        La app separa los partidos por fase del campeonato: grupos y eliminatorias.
+      </p>
+    </article>
+    <article class="rules-card">
+      <h2>Modo oficial</h2>
+      <p>
+        Cada participante carga su pronostico sobre partidos habilitados por el organizador.
+      </p>
+    </article>
+  </div>
+
+  <div class="rules-layout bracket-layout">
+    <article class="rules-card bracket-card">
+      <h2>16avos</h2>
+      <p class="bracket-placeholder">Espacio reservado para los cruces de dieciseisavos.</p>
+      <div class="bracket-slots">
+        <div class="bracket-slot">A1 vs B2</div>
+        <div class="bracket-slot">C1 vs D2</div>
+        <div class="bracket-slot">E1 vs F2</div>
+        <div class="bracket-slot">G1 vs H2</div>
+      </div>
+    </article>
+    <article class="rules-card bracket-card">
+      <h2>Octavos</h2>
+      <p class="bracket-placeholder">Los ganadores de 16avos se iran autopoblando aca.</p>
+      <div class="bracket-slots">
+        <div class="bracket-slot">Ganador 1</div>
+        <div class="bracket-slot">Ganador 2</div>
+        <div class="bracket-slot">Ganador 3</div>
+        <div class="bracket-slot">Ganador 4</div>
+      </div>
+    </article>
+    <article class="rules-card bracket-card">
+      <h2>Cuartos</h2>
+      <p class="bracket-placeholder">Los equipos avanzados se acomodan en esta grilla.</p>
+      <div class="bracket-slots">
+        <div class="bracket-slot">Ganador 1</div>
+        <div class="bracket-slot">Ganador 2</div>
+      </div>
+    </article>
+    <article class="rules-card bracket-card">
+      <h2>Semifinal / Final</h2>
+      <p class="bracket-placeholder">Lugar reservado para semifinal, final y tercer puesto.</p>
+      <div class="bracket-slots">
+        <div class="bracket-slot">Semi 1</div>
+        <div class="bracket-slot">Semi 2</div>
+        <div class="bracket-slot">Final</div>
+        <div class="bracket-slot">3er puesto</div>
+      </div>
+    </article>
+  </div>
+</section>

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Registro | Prode Mundial 2026</title>
+    <link rel="stylesheet" href="/stylesheets/base.css" />
+  </head>
+  <body class="auth-page">
+    <main class="auth-shell">
+      <section class="auth-card">
+        <p class="eyebrow">Prode Mundial 2026</p>
+        <h1>Registro</h1>
+        <p class="auth-copy">Creá tu usuario para participar.</p>
+        <form method="post" action="/users/register" class="auth-form">
+          <label>
+            Usuario
+            <div class="email-suffix-field">
+              <input type="text" name="email" placeholder="leo" value="<%= (typeof old !== 'undefined' && old.email) ? old.email.replace(/@prode\.com$/,'') : '' %>" required />
+              <span class="email-suffix">@prode.com</span>
+            </div>
+          </label>
+          <label>
+            Nombre
+            <input type="text" name="name" placeholder="Tu nombre" value="<%= (typeof old !== 'undefined' && old.name) ? old.name : '' %>" required />
+          </label>
+          <label>
+            Contraseña
+            <input type="password" name="password" placeholder="••••••••" required />
+          </label>
+          <% if (typeof errors !== 'undefined' && errors) { %>
+            <p class="form-error"><%= Object.values(errors)[0]?.msg || 'Error de registro' %></p>
+          <% } %>
+          <button class="button primary" type="submit">Crear usuario</button>
+        </form>
+        <div class="auth-links"><a class="auth-link" href="/">Volver al inicio</a></div>
+      </section>
+    </main>
+  </body>
+</html>

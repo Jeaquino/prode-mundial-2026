@@ -1,0 +1,17 @@
+dialog {
+  width: min(420px, calc(100% - 32px));
+  border-radius: 8px;
+  color: var(--text);
+  padding: 0;
+}
+
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.62);
+}
+
+#loginForm,
+#adminLoginForm {
+  display: grid;
+  gap: 16px;
+  padding: 20px;
+}

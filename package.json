@@ -1,0 +1,11 @@
+{
+  "name": "prode-mundial-2026",
+  "version": "0.2.0",
+  "private": true,
+  "scripts": {
+    "start": "cd prode && npm start",
+    "check": "cd prode && node --check ./app.js && node --check ./controllers/prode.js && node --check ./controllers/usuarios.js",
+    "dbinit": "cd prode && npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
+    "dbreset": "cd prode && npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all"
+  }
+}

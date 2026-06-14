@@ -1,0 +1,10 @@
+<section class="panel" id="rankingPanel">
+  <div class="rules-card">
+    <h2>Ranking</h2>
+    <ol>
+      <% data.leaderboard.forEach(row => { %>
+        <li><%= row.username %> - <%= row.points %> pts</li>
+      <% }) %>
+    </ol>
+  </div>
+</section>

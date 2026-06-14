@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login | Prode Mundial 2026</title>
+    <link rel="stylesheet" href="/stylesheets/base.css" />
+  </head>
+  <body class="auth-page">
+    <main class="auth-shell">
+      <section class="auth-card">
+        <p class="eyebrow">Prode Mundial 2026</p>
+        <h1>Ingresar</h1>
+        <p class="auth-copy">Usá tu usuario y contraseña para entrar al prode.</p>
+        <form method="post" action="/users/login" class="auth-form">
+          <label>
+            Usuario
+            <div class="email-suffix-field">
+              <input type="text" name="email" placeholder="leo" value="<%= (typeof old !== 'undefined' && old.email) ? old.email.replace(/@prode\.com$/,'') : '' %>" required />
+              <span class="email-suffix">@prode.com</span>
+            </div>
+          </label>
+          <label>
+            Contraseña
+            <input type="password" name="password" placeholder="Hola1234" required />
+          </label>
+          <% if (typeof errors !== 'undefined' && errors) { %>
+            <p class="form-error"><%= Object.values(errors)[0]?.msg || 'Error de login' %></p>
+          <% } %>
+          <button class="button primary" type="submit">Entrar</button>
+        </form>
+        <div class="auth-links"><a class="auth-link" href="/">Volver al inicio</a><a class="auth-link" href="/users/register">Crear usuario</a></div>
+      </section>
+    </main>
+  </body>
+</html>
