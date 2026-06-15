@@ -10,6 +10,9 @@
   --danger: #ff6b6b;
 }
 
+
+
+
 * { box-sizing: border-box; }
 body {
   margin: 0;
@@ -100,3 +103,5 @@ input::placeholder { color: #7f90b3; }
 @media (max-width: 900px) {
   .home-intro, .rules-layout { grid-template-columns: 1fr; }
 }
+
+

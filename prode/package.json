@@ -19,6 +19,7 @@
     "express-validator": "^7.3.2",
     "http-errors": "~1.6.3",
     "jsonwebtoken": "^9.0.3",
+    "moment-timezone": "^0.6.2",
     "morgan": "~1.9.1",
     "mysql2": "^3.22.4",
     "sequelize": "^6.37.8",

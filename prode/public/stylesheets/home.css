@@ -73,3 +73,76 @@
 .bracket-placeholder { color: var(--muted); margin-bottom: 14px; }
 .bracket-slots { display: grid; gap: 10px; }
 .bracket-slot { border: 1px dashed var(--line); border-radius: 14px; padding: 12px 14px; color: var(--muted); background: rgba(255,255,255,0.03); }
+
+
+.rules-details,
+.phase-details {
+  margin: 12px 0 16px;
+}
+
+.rules-details > summary,
+.phase-details > summary {
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 6px 0;
+}
+
+.rules-details > summary::marker,
+.phase-details > summary::marker {
+  font-size: 1.2rem;
+}
+
+.phase-details {
+  margin-top: 18px;
+}
+
+.phase-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.phase-card {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  background: rgba(18, 28, 50, 0.92);
+  padding: 14px 16px;
+}
+
+.phase-card summary {
+  cursor: pointer;
+  font-weight: 700;
+  list-style: none;
+}
+
+.phase-card summary::-webkit-details-marker {
+  display: none;
+}
+
+.phase-card summary::after {
+  content: "▾";
+  float: right;
+  color: var(--muted);
+}
+
+.phase-card[open] summary::after {
+  content: "▴";
+}
+
+.phase-slots {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.phase-slot {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+}
+
+.phase-slot span {
+  color: var(--muted);
+}

@@ -29,6 +29,35 @@ const getDashboard = async (req, res) => {
     ? await Pronostico.findAll({ where: { usuario_id: session.userId } })
     : [];
 
+  const knockoutStages = {
+    '16AVOS': [],
+    'OCTAVOS': [],
+    'CUARTOS': [],
+    'SEMIFINAL': [],
+    'FINAL': [],
+    '3ER_PUESTO': [],
+  };
+
+  matches.forEach((m) => {
+    if (knockoutStages[m.fase]) {
+      knockoutStages[m.fase].push({
+        id: m.id,
+        home: m.local?.nombre || m.equipo_local_id,
+        away: m.visitante?.nombre || m.equipo_visitante_id,
+        dateTime: m.fecha_hora,
+        stadium: m.estadio?.nombre || null,
+        final: m.estado === 'FINALIZADO',
+        homeGoals: m.goles_local,
+        awayGoals: m.goles_visitante,
+      });
+    }
+  });
+
+  Object.keys(knockoutStages).forEach((key) => {
+    knockoutStages[key].sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime));
+  });
+
+
   res.render('index', {
     title: 'Prode Mundial 2026',
     usuario: session?.user || null,
@@ -39,6 +68,7 @@ const getDashboard = async (req, res) => {
       matches: matches.map((m) => serializeMatch(m, userPronostics)),
       leaderboard,
       currentDate,
+      knockoutStages,
     },
   });
 };
@@ -78,13 +108,15 @@ function serializeMatch(match, userPronostics) {
     awayGoals: match.goles_visitante,
     prediction: userPronostic
       ? {
-          homeGoals: userPronostic.goles_local_predicho,
-          awayGoals: userPronostic.goles_visitante_predicho,
-          points: userPronostic.puntos_obtenidos,
-        }
+        homeGoals: userPronostic.goles_local_predicho,
+        awayGoals: userPronostic.goles_visitante_predicho,
+        points: userPronostic.puntos_obtenidos,
+        locked: true,
+      }
       : null,
   };
 }
+
 
 function scorePrediction(prediction, match) {
   if (!prediction || match.goles_local == null || match.goles_visitante == null) return 0;

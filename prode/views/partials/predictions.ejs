@@ -3,49 +3,200 @@
     <h2>Pronosticos</h2>
     <% if (locals.usuario) { %>
       <p>Elegí un partido y cargá tu marcador. Una vez guardado, el pronóstico queda fijo y ya no se puede editar.</p>
-      <p>Total de partidos: <%= data.matches.length %></p>
-      <div class="predictions-list">
-        <% let currentGroup = null; %>
-        <% data.matches.forEach(match => { %>
-          <% if (match.isKnockout) { %>
-            <% if (currentGroup !== 'KO') { currentGroup = 'KO'; %>
-              <div class="zone-separator"><span>Eliminacion</span></div>
+      <p>Total de partidos: <%= data.matches.length %>
+      </p>
+      <% const groupMatches=data.matches.filter(match=> !match.isKnockout); %>
+        <% const knockoutMatches=data.matches.filter(match=> match.isKnockout); %>
+
+          <details class="matches-details">
+            <summary>Partidos de grupos</summary>
+
+            <div class="predictions-list">
+              <% let currentGroup=null; %>
+                <% groupMatches.forEach(match=> { %>
+                  <% if (match.isKnockout) { %>
+                    <% if (currentGroup !=='KO' ) { currentGroup='KO' ; %>
+                      <div class="zone-separator"><span>Eliminacion</span></div>
+                      <% } %>
+                        <% } else if (match.group !==currentGroup) { currentGroup=match.group; %>
+                          <div class="zone-separator">
+                            <span>
+                              <%= match.group ? `Grupo ${match.group}` : 'Eliminacion' %>
+                            </span>
+                          </div>
+
+                          <% } %>
+                            <% const existing=!!match.prediction; %>
+                              <% const locked=existing || match.final; %>
+                                <article class="prediction-item <%= locked ? 'locked' : '' %>">
+                                  <div>
+                                    <div class="match-group-label">
+                                      <%= match.group ? `Grupo ${match.group}` : 'Eliminacion' %>
+                                    </div>
+                                    <strong>
+                                      <%= match.home %> vs <%= match.away %>
+                                    </strong>
+                                    <p>
+                                      <%= match.stage %> · <%= new Date(match.dateTime).toLocaleString('es-AR') %>
+                                    </p>
+                                    <p>
+                                      <%= match.stadium || 'Sin estadio' %>
+                                    </p>
+
+                                    <% if (match.final) { %>
+                                      <p class="prediction-note">Resultado oficial: <strong>
+                                          <%= match.homeGoals %> - <%= match.awayGoals %>
+                                        </strong></p>
+                                      <% } else if (existing) { %>
+                                        <p class="prediction-note">Pronostico ya guardado</p>
+                                        <% } else { %>
+                                          <p class="prediction-note">Antes de guardar: este pronostico no se podra
+                                            modificar
+                                          </p>
+                                          <% } %>
+                                  </div>
+
+                                  <div class="prediction-actions">
+                                    <form method="post" action="/api/pronosticos" class="prediction-form">
+                                      <input type="hidden" name="partido_id" value="<%= match.id %>" />
+                                      <input type="number" name="goles_local_predicho" min="0" placeholder="0" required
+                                        value="<%= existing && match.prediction.homeGoals != null ? match.prediction.homeGoals : '' %>"
+                                        <%=locked ? 'disabled' : '' %>
+                                      />
+                                      <input type="number" name="goles_visitante_predicho" min="0" placeholder="0"
+                                        required
+                                        value="<%= existing && match.prediction.awayGoals != null ? match.prediction.awayGoals : '' %>"
+                                        <%=locked ? 'disabled' : '' %>
+                                      />
+                                      <button class="button secondary" type="submit" <%=locked ? 'disabled' : '' %>>
+                                        <%= locked ? 'Guardado' : 'Guardar' %>
+                                      </button>
+                                    </form>
+                                  </div>
+                                </article>
+
+                                <% }) %>
+            </div>
+          </details>
+
+          <details class="phase-details">
+            <summary>Partidos de eliminacion</summary>
+
+            <% const knockoutStageLabels={ '16AVOS' : '16avos' , 'OCTAVOS' : 'Octavos' , 'CUARTOS' : 'Cuartos'
+              , 'SEMIFINAL' : 'Semifinal' , 'FINAL' : 'Final' , '3ER_PUESTO' : '3er puesto' }; %>
+
+              <% Object.keys(knockoutStageLabels).forEach(stageKey=> { %>
+                <% const stageMatches=knockoutMatches.filter(match=> match.stage === stageKey); %>
+
+                  <details class="phase-card">
+                    <summary>
+                      <%= knockoutStageLabels[stageKey] %>
+                    </summary>
+
+                    <% if (stageMatches.length) { %>
+                      <div class="predictions-list">
+                        <% stageMatches.forEach(match=> { %>
+                          <% const existing=!!match.prediction; %>
+                            <% const locked=existing || match.final; %>
+                              <article class="prediction-item <%= locked ? 'locked' : '' %>">
+                                <div>
+                                  <div class="match-group-label">Eliminacion</div>
+                                  <strong>
+                                    <%= match.home %> vs <%= match.away %>
+                                  </strong>
+                                  <p>
+                                    <%= match.stage %> · <%= new Date(match.dateTime).toLocaleString('es-AR') %>
+                                  </p>
+                                  <p>
+                                    <%= match.stadium || 'Sin estadio' %>
+                                  </p>
+
+                                  <% if (match.final) { %>
+                                    <p class="prediction-note">Resultado oficial: <strong>
+                                        <%= match.homeGoals %> - <%= match.awayGoals %>
+                                      </strong></p>
+                                    <% } else if (existing) { %>
+                                      <p class="prediction-note">Pronostico ya guardado</p>
+                                      <% } else { %>
+                                        <p class="prediction-note">Antes de guardar: este pronostico no se podra
+                                          modificar</p>
+                                        <% } %>
+                                </div>
+
+                                <div class="prediction-actions">
+                                  <form method="post" action="/api/pronosticos" class="prediction-form">
+                                    <input type="hidden" name="partido_id" value="<%= match.id %>" />
+                                    <input type="number" name="goles_local_predicho" min="0" placeholder="0" required
+                                      value="<%= existing && match.prediction.homeGoals != null ? match.prediction.homeGoals : '' %>"
+                                      <%=locked ? 'disabled' : '' %> />
+                                    <input type="number" name="goles_visitante_predicho" min="0" placeholder="0"
+                                      required
+                                      value="<%= existing && match.prediction.awayGoals != null ? match.prediction.awayGoals : '' %>"
+                                      <%=locked ? 'disabled' : '' %> />
+                                    <button class="button secondary" type="submit" <%=locked ? 'disabled' : '' %>><%=
+                                        locked ? 'Guardado' : 'Guardar' %></button>
+                                  </form>
+                                </div>
+                              </article>
+                              <% }) %>
+                      </div>
+                      <% } else { %>
+                        <p class="bracket-placeholder">TBD</p>
+                        <% } %>
+                  </details>
+                  <% }) %>
+          </details>
+
+
+
+          <% } else { %>
+            <p>Iniciá sesión para cargar tus pronosticos.</p>
             <% } %>
-          <% } else if (match.group !== currentGroup) { currentGroup = match.group; %>
-            <div class="zone-separator">
-              <span><%= match.group ? `Grupo ${match.group}` : 'Eliminacion' %></span>
-            </div>
-          <% } %>
-          <% const existing = match.prediction && match.prediction.locked; %>
-          <article class="prediction-item <%= existing ? 'locked' : '' %>">
-            <div>
-              <div class="match-group-label"><%= match.group ? `Grupo ${match.group}` : 'Eliminacion' %></div>
-              <strong><%= match.home %> vs <%= match.away %></strong>
-              <p><%= match.stage %> · <%= new Date(match.dateTime).toLocaleString('es-AR') %></p>
-              <p><%= match.stadium || 'Sin estadio' %></p>
-              <p class="prediction-note"><%= existing ? 'Pronostico ya guardado y bloqueado' : 'Antes de guardar: este pronostico no se podra modificar' %></p>
-            </div>
-            <div class="prediction-actions">
-              <form method="post" action="/api/pronosticos" class="prediction-form">
-                <input type="hidden" name="partido_id" value="<%= match.id %>" />
-                <input type="number" name="goles_local_predicho" min="0" placeholder="0" required <%= existing ? 'disabled' : '' %> />
-                <input type="number" name="goles_visitante_predicho" min="0" placeholder="0" required <%= existing ? 'disabled' : '' %> />
-                <button class="button secondary" type="submit" <%= existing ? 'disabled' : '' %>><%= existing ? 'Guardado' : 'Guardar' %></button>
-              </form>
-            </div>
-          </article>
-        <% }) %>
-      </div>
-      <div class="phase-grid">
-        <section class="phase-card"><h3>16avos</h3><div class="phase-slots"><div class="phase-slot">TBD</div><div class="phase-slot">TBD</div><div class="phase-slot">TBD</div><div class="phase-slot">TBD</div></div></section>
-        <section class="phase-card"><h3>Octavos</h3><div class="phase-slots"><div class="phase-slot">TBD</div><div class="phase-slot">TBD</div><div class="phase-slot">TBD</div><div class="phase-slot">TBD</div></div></section>
-        <section class="phase-card"><h3>Cuartos</h3><div class="phase-slots"><div class="phase-slot">TBD</div><div class="phase-slot">TBD</div></div></section>
-        <section class="phase-card"><h3>Semifinal</h3><div class="phase-slots"><div class="phase-slot">TBD</div><div class="phase-slot">TBD</div></div></section>
-        <section class="phase-card"><h3>Final</h3><div class="phase-slots"><div class="phase-slot">TBD</div></div></section>
-        <section class="phase-card"><h3>3er puesto</h3><div class="phase-slots"><div class="phase-slot">TBD</div></div></section>
-      </div>
-    <% } else { %>
-      <p>Iniciá sesión para cargar tus pronosticos.</p>
-    <% } %>
   </div>
 </section>
+
+
+<script>
+  document.querySelectorAll('.prediction-form').forEach((form) => {
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(form);
+
+      const response = await fetch('/api/pronosticos', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          partido_id: formData.get('partido_id'),
+          goles_local_predicho: formData.get('goles_local_predicho'),
+          goles_visitante_predicho: formData.get('goles_visitante_predicho')
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.message || 'Error al guardar pronostico');
+        return;
+      }
+
+      form.querySelectorAll('input[type="number"]').forEach((input) => input.disabled = true);
+
+      const button = form.querySelector('button[type="submit"]');
+      if (button) {
+        button.disabled = true;
+        button.textContent = 'Guardado';
+      }
+
+      const item = form.closest('.prediction-item');
+      if (item) item.classList.add('locked');
+
+      const note = item?.querySelector('.prediction-note');
+      if (note) note.textContent = 'Pronostico ya guardado y bloqueado';
+
+      window.location.hash = 'predictionsPanel';
+    });
+  });
+</script>

@@ -8,76 +8,92 @@
       </p>
     </div>
     <div class="home-meta">
-      <p><strong>Hoy:</strong> <%= data.currentDate %></p>
-      <p><strong>Partidos cargados:</strong> <%= data.matches.length %></p>
-      <p><strong>Participantes:</strong> <%= data.players.length %></p>
+      <p><strong>Hoy:</strong>
+        <%= data.currentDate %>
+      </p>
+      <p><strong>Partidos cargados:</strong>
+        <%= data.matches.length %>
+      </p>
+      <p><strong>Participantes:</strong>
+        <%= data.players.length %>
+      </p>
     </div>
   </div>
 
+
+
   <div class="rules-layout">
-    <article class="rules-card">
-      <h2>Como se ganan puntos</h2>
-      <p>Tu prediccion se compara con el resultado oficial del partido.</p>
-      <ul class="rules-list">
-        <li><strong>Marcador exacto</strong><span>Predices 2-1, fue 2-1</span><b>5 pts</b></li>
-        <li><strong>Empate correcto no exacto</strong><span>Predices 1-1, fue 2-2</span><b>4 pts</b></li>
-        <li><strong>Diferencia de gol + ganador</strong><span>Predices 2-0, fue 3-1</span><b>4 pts</b></li>
-        <li><strong>Solo ganador</strong><span>Predices 2-0, fue 4-1</span><b>3 pts</b></li>
-        <li><strong>Errado</strong><span>Predices empate, gano alguien</span><b>0 pts</b></li>
-      </ul>
-    </article>
-    <article class="rules-card accent">
-      <h2>Etapas</h2>
-      <p>
-        La app separa los partidos por fase del campeonato: grupos y eliminatorias.
-      </p>
-    </article>
-    <article class="rules-card">
-      <h2>Modo oficial</h2>
-      <p>
-        Cada participante carga su pronostico sobre partidos habilitados por el organizador.
-      </p>
+    <details class="rules-details">
+      <summary>Como se ganan puntos</summary>
+      <article class="rules-card">
+        <p>Tu prediccion se compara con el resultado oficial del partido.</p>
+        <ul class="rules-list">
+          <li><strong>Marcador exacto</strong><span>Predices 2-1, fue 2-1</span><b>5 pts</b></li>
+          <li><strong>Empate correcto no exacto</strong><span>Predices 1-1, fue 2-2</span><b>4 pts</b></li>
+          <li><strong>Diferencia de gol + ganador</strong><span>Predices 2-0, fue 3-1</span><b>4 pts</b></li>
+          <li><strong>Solo ganador</strong><span>Predices 2-0, fue 4-1</span><b>3 pts</b></li>
+          <li><strong>Errado</strong><span>Predices empate, gano alguien</span><b>0 pts</b></li>
+        </ul>
+      </article>
+    </details>
+
+    <article class="rules-card info-card">
+      <div class="info-columns">
+        <div>
+          <h2>Etapas</h2>
+          <p>La app separa los partidos por fase del campeonato: grupos y eliminatorias.</p>
+          <p>En fase de eliminacion, para simplificar el prode, los penales se contemplan dentro del resultado final.
+          </p>
+          <p>Ejemplo: si un partido termina 1-1 en los 120 minutos y en penales gana un equipo 5-3, para el prode el
+            resultado final se carga como 6-4.</p>
+        </div>
+        <div>
+          <h2>Modo oficial</h2>
+          <p>Cada participante carga su pronostico sobre partidos habilitados por el organizador.</p>
+        </div>
+      </div>
     </article>
   </div>
 
-  <div class="rules-layout bracket-layout">
-    <article class="rules-card bracket-card">
-      <h2>16avos</h2>
-      <p class="bracket-placeholder">Espacio reservado para los cruces de dieciseisavos.</p>
-      <div class="bracket-slots">
-        <div class="bracket-slot">A1 vs B2</div>
-        <div class="bracket-slot">C1 vs D2</div>
-        <div class="bracket-slot">E1 vs F2</div>
-        <div class="bracket-slot">G1 vs H2</div>
+  <details class="phase-details">
+    <summary>Fases finales</summary>
+
+    <% const stageLabels={ '16AVOS' : '16avos' , 'OCTAVOS' : 'Octavos' , 'CUARTOS' : 'Cuartos' , 'SEMIFINAL'
+      : 'Semifinal' , 'FINAL' : 'Final' , '3ER_PUESTO' : '3er puesto' }; %>
+
+      <div class="phase-grid">
+        <% Object.keys(stageLabels).forEach(stageKey=> { %>
+          <details class="phase-card">
+            <summary>
+              <%= stageLabels[stageKey] %>
+            </summary>
+
+            <% if (data.knockoutStages[stageKey] && data.knockoutStages[stageKey].length) { %>
+              <div class="phase-slots">
+                <% data.knockoutStages[stageKey].forEach(match=> { %>
+                  <div class="phase-slot">
+                    <strong>
+                      <%= match.home %> vs <%= match.away %>
+                    </strong><br />
+                    <span>
+                      <%= new Date(match.dateTime).toLocaleString('es-AR') %>
+                    </span><br />
+                    <span>
+                      <%= match.stadium || 'Sin estadio' %>
+                    </span>
+                    <% if (match.final) { %>
+                      <br />
+                      <span>Resultado: <%= match.homeGoals %> - <%= match.awayGoals %></span>
+                      <% } %>
+                  </div>
+                  <% }) %>
+              </div>
+              <% } else { %>
+                <p class="bracket-placeholder">TBD</p>
+                <% } %>
+          </details>
+          <% }) %>
       </div>
-    </article>
-    <article class="rules-card bracket-card">
-      <h2>Octavos</h2>
-      <p class="bracket-placeholder">Los ganadores de 16avos se iran autopoblando aca.</p>
-      <div class="bracket-slots">
-        <div class="bracket-slot">Ganador 1</div>
-        <div class="bracket-slot">Ganador 2</div>
-        <div class="bracket-slot">Ganador 3</div>
-        <div class="bracket-slot">Ganador 4</div>
-      </div>
-    </article>
-    <article class="rules-card bracket-card">
-      <h2>Cuartos</h2>
-      <p class="bracket-placeholder">Los equipos avanzados se acomodan en esta grilla.</p>
-      <div class="bracket-slots">
-        <div class="bracket-slot">Ganador 1</div>
-        <div class="bracket-slot">Ganador 2</div>
-      </div>
-    </article>
-    <article class="rules-card bracket-card">
-      <h2>Semifinal / Final</h2>
-      <p class="bracket-placeholder">Lugar reservado para semifinal, final y tercer puesto.</p>
-      <div class="bracket-slots">
-        <div class="bracket-slot">Semi 1</div>
-        <div class="bracket-slot">Semi 2</div>
-        <div class="bracket-slot">Final</div>
-        <div class="bracket-slot">3er puesto</div>
-      </div>
-    </article>
-  </div>
+  </details>
+
 </section>

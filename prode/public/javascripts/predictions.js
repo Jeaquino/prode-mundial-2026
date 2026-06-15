@@ -23,10 +23,11 @@ export function renderPredictions(currentFilter) {
 }
 
 export function attachPredictionHandlers() {
-  elements.predictionList.querySelectorAll('[data-save-prediction]').forEach((button) => {
-    button.addEventListener('click', handlePredictionSave);
+  elements.predictionList.querySelectorAll('.prediction-form').forEach((form) => {
+    form.addEventListener('submit', handlePredictionSubmit);
   });
 }
+
 
 function renderPredictionGroup(group) {
   return `
@@ -51,10 +52,10 @@ function renderPredictionCard(match) {
   const status = match.final
     ? `<span class="badge final">Finalizado</span>`
     : prediction.locked
-    ? `<span class="badge locked">Guardado</span>`
-    : match.unlocked
-    ? `<span class="badge">Abierto</span>`
-    : `<span class="badge locked">Bloqueado</span>`;
+      ? `<span class="badge locked">Guardado</span>`
+      : match.unlocked
+        ? `<span class="badge">Abierto</span>`
+        : `<span class="badge locked">Bloqueado</span>`;
 
   return `
     <article class="match-card ${locked ? "locked" : ""}">
@@ -88,31 +89,38 @@ function renderPredictionCard(match) {
   `;
 }
 
-async function handlePredictionSave(event) {
-  const matchId = event.currentTarget.dataset.savePrediction;
-  const card = event.currentTarget.closest('.match-card');
-  const homeInput = card.querySelector('[data-prediction="home"]');
-  const awayInput = card.querySelector('[data-prediction="away"]');
+async function handlePredictionSubmit(event) {
+  event.preventDefault();
+
+  const form = event.currentTarget;
+  const matchId = form.querySelector('input[name="partido_id"]').value;
+  const homeInput = form.querySelector('input[name="goles_local_predicho"]');
+  const awayInput = form.querySelector('input[name="goles_visitante_predicho"]');
+  const button = form.querySelector('button[type="submit"]');
 
   try {
     await api('/api/pronosticos', {
       method: 'POST',
-      body: { partido_id: matchId, goles_local_predicho: homeInput.value, goles_visitante_predicho: awayInput.value },
+      body: {
+        partido_id: matchId,
+        goles_local_predicho: homeInput.value,
+        goles_visitante_predicho: awayInput.value
+      },
     });
-    Object.assign(state.predictions[matchId] || (state.predictions[matchId] = {}), { locked: true, homeGoals: Number(homeInput.value), awayGoals: Number(awayInput.value) });
-    renderPredictions('open');
-    attachPredictionHandlers();
-    const sameTab = document.querySelector('.tab.active')?.dataset.tab === 'predictions';
-    if (!sameTab) {
-      document.querySelector('.tab[data-tab="predictions"]')?.click();
-    }
+
+    homeInput.disabled = true;
+    awayInput.disabled = true;
+    button.disabled = true;
+    button.textContent = 'Guardado';
+    form.closest('.prediction-item')?.classList.add('locked');
+    const note = form.closest('.prediction-item')?.querySelector('.prediction-note');
+    if (note) note.textContent = 'Pronostico ya guardado';
+    window.location.hash = 'predictionsPanel';
   } catch (error) {
     alert(error.message);
-    Object.assign(state, await api('/api/state'));
-    renderPredictions('open');
-    attachPredictionHandlers();
   }
 }
+
 
 function getPrediction(matchId) {
   return state.predictions[matchId] || { homeGoals: null, awayGoals: null, locked: false };

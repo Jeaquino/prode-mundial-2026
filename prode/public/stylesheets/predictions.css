@@ -160,3 +160,18 @@
 .phase-card h3 { margin: 0 0 10px; }
 .phase-slots { display: grid; gap: 8px; }
 .phase-slot { border: 1px dashed var(--line); border-radius: 12px; padding: 10px 12px; color: var(--muted); background: rgba(255,255,255,0.02); }
+
+.matches-details {
+  margin: 12px 0 16px;
+}
+
+.matches-details > summary {
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 6px 0;
+}
+
+.matches-details > summary::marker {
+  font-size: 1.2rem;
+}

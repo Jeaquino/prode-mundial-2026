@@ -42,16 +42,17 @@
       </section>
 
       <nav class="tabs" aria-label="Secciones">
-        <a class="tab active" href="#homePanel">Inicio</a>
-        <% if (locals.usuario) { %>
-          <a class="tab" href="#predictionsPanel">Pronosticos</a>
-          <a class="tab" href="#rankingPanel">Ranking</a>
-        <% } %>
-      </nav>
+  <a class="tab active" href="#homePanel" data-tab="home">Inicio</a>
+  <% if (locals.usuario) { %>
+    <a class="tab" href="#predictionsPanel" data-tab="predictions">Pronosticos</a>
+    <a class="tab" href="#rankingPanel" data-tab="ranking">Ranking</a>
+  <% } %>
+</nav>
 
       <%- include('partials/home') %>
       <%- include('partials/predictions') %>
       <%- include('partials/ranking') %>
     </main>
+     <script type="module" src="/javascripts/app.js"></script>
   </body>
 </html>
